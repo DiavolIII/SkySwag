@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - Новости и события</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">
+            SkySwag
+            <small>sky is the limit</small>
+        </div>
+    </div>
+
+    <div class="app">
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item" onclick="navigateTo('catalog')">Каталог</span>
+                <span class="nav-item" onclick="navigateTo('services')">Услуги</span>
+                <span class="nav-item" onclick="navigateTo('about')">О компании</span>
+                <span class="nav-item" onclick="navigateTo('news')">Новости</span>
+                <span class="nav-item" onclick="navigateTo('leasing')">Лизинг / Кредитование</span>
+                <span class="nav-item" onclick="navigateTo('configurator')">Конфигуратор</span>
+            </nav>
+            <button class="action-btn" onclick="navigateTo('catalog')">Получить предложение</button>
+        </header>
+
+        <main class="main-content">
+            <h1 class="page-title">Новости и события</h1>
+            
+            <div class="news-grid">
+                <!-- НОВОСТЬ 1: Июнь 2026 -->
+                <article class="news-card" data-id="1">
+                    <div class="news-image" style="background-image: url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800');">
+                        <div class="news-date-badge">Июнь 2026</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">15 июня 2026</div>
+                        <h2 class="news-title">Поставка Airbus H130 в новой комплектации</h2>
+                        <p class="news-excerpt">Компания SkySwag осуществила поставку трех вертолетов Airbus H130 в премиальной комплектации для VIP-перевозок. Все машины оборудованы по последнему слову техники.</p>
+                        <div class="news-meta">
+                            <span class="news-category">Поставки</span>
+                            <span class="news-views">👁 234</span>
+                        </div>
+                        <button class="action-btn news-btn" onclick="showNewsDetail(1)">Читать далее →</button>
+                    </div>
+                </article>
+
+                <!-- НОВОСТЬ 2: Май 2026 -->
+                <article class="news-card" data-id="2">
+                    <div class="news-image" style="background-image: url('https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=800');">
+                        <div class="news-date-badge">Май 2026</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">28 мая 2026</div>
+                        <h2 class="news-title">Новая программа лизинга от SkySwag</h2>
+                        <p class="news-excerpt">Запущена специальная программа лизинга на вертолеты Robinson с пониженной ставкой. Первоначальный взнос всего от 10%.</p>
+                        <div class="news-meta">
+                            <span class="news-category">Лизинг</span>
+                            <span class="news-views">👁 156</span>
+                        </div>
+                        <button class="action-btn news-btn" onclick="showNewsDetail(2)">Читать далее →</button>
+                    </div>
+                </article>
+
+                <!-- НОВОСТЬ 3: Апрель 2026 -->
+                <article class="news-card" data-id="3">
+                    <div class="news-image" style="background-image: url('https://images.unsplash.com/photo-1579165466991-4671351aec7a?w=800');">
+                        <div class="news-date-badge">Апрель 2026</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">10 апреля 2026</div>
+                        <h2 class="news-title">Открытие сервисного центра в Москве</h2>
+                        <p class="news-excerpt">Новый сертифицированный сервисный центр начал работу в Москве. Площадь 2000 кв.м, современное оборудование, сертифицированные инженеры.</p>
+                        <div class="news-meta">
+                            <span class="news-category">Сервис</span>
+                            <span class="news-views">👁 312</span>
+                        </div>
+                        <button class="action-btn news-btn" onclick="showNewsDetail(3)">Читать далее →</button>
+                    </div>
+                </article>
+
+                <!-- НОВОСТЬ 4: Март 2026 -->
+                <article class="news-card" data-id="4">
+                    <div class="news-image" style="background-image: url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800');">
+                        <div class="news-date-badge">Март 2026</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">5 марта 2026</div>
+                        <h2 class="news-title">Участие в выставке HeliRussia 2026</h2>
+                        <p class="news-excerpt">Приглашаем посетить наш стенд на международной выставке HeliRussia 2026. Будут представлены новинки и специальные предложения.</p>
+                        <div class="news-meta">
+                            <span class="news-category">Мероприятия</span>
+                            <span class="news-views">👁 189</span>
+                        </div>
+                        <button class="action-btn news-btn" onclick="showNewsDetail(4)">Читать далее →</button>
+                    </div>
+                </article>
+
+                <!-- НОВОСТЬ 5: Февраль 2026 -->
+                <article class="news-card" data-id="5">
+                    <div class="news-image" style="background-image: url('https://images.unsplash.com/photo-1577495508326-19a1b3cf65b7?w=800');">
+                        <div class="news-date-badge">Февраль 2026</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">12 февраля 2026</div>
+                        <h2 class="news-title">Поставка вертолета для санавиации</h2>
+                        <p class="news-excerpt">Передан специализированный вертолет Airbus H125 для нужд санитарной авиации. Машина оборудована медицинским модулем.</p>
+                        <div class="news-meta">
+                            <span class="news-category">Социальные проекты</span>
+                            <span class="news-views">👁 267</span>
+                        </div>
+                        <button class="action-btn news-btn" onclick="showNewsDetail(5)">Читать далее →</button>
+                    </div>
+                </article>
+
+                <!-- НОВОСТЬ 6: Январь 2026 -->
+                <article class="news-card" data-id="6">
+                    <div class="news-image" style="background-image: url('https://images.unsplash.com/photo-1520437358207-323b43b50729?w=800');">
+                        <div class="news-date-badge">Январь 2026</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">20 января 2026</div>
+                        <h2 class="news-title">Расширение партнерской сети</h2>
+                        <p class="news-excerpt">Заключены соглашения с новыми поставщиками из Европы и Азии. Теперь ассортимент доступных моделей стал еще шире.</p>
+                        <div class="news-meta">
+                            <span class="news-category">Партнерство</span>
+                            <span class="news-views">👁 145</span>
+                        </div>
+                        <button class="action-btn news-btn" onclick="showNewsDetail(6)">Читать далее →</button>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Пагинация -->
+            <div class="pagination">
+                <button class="active">1</button>
+                <button onclick="window.location.href='?page=2'">2</button>
+                <button onclick="window.location.href='?page=3'">3</button>
+                <button onclick="window.location.href='?page=4'">4</button>
+                <button onclick="window.location.href='?page=5'">5</button>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                </div>
+                <div class="footer-contact">
+                    <p>info@skywag.ru</p>
+                    <p>Политика конфиденциальности</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Модальное окно для детальной новости -->
+    <div id="newsModal" class="modal-overlay" style="display: none;" onclick="hideNewsModal()">
+        <div class="modal-content news-modal" onclick="event.stopPropagation()">
+            <div id="newsModalContent"></div>
+            <button class="action-btn modal-close" onclick="hideNewsModal()">Закрыть</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/news.js"></script>
+</body>
+</html>

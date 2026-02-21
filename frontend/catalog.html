@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - Каталог вертолетов</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Дополнительные стили для каталога */
+        .catalog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .model-badge {
+            display: inline-block;
+            background: #e31b23;
+            color: #fff;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 1rem;
+        }
+        
+        .stats-badge {
+            background: #141414;
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            padding: 0.5rem 1.5rem;
+            color: #d4af37;
+            font-size: 0.9rem;
+        }
+        
+        .product-card {
+            position: relative;
+            background: #141414;
+            border: 1px solid #d4af37;
+            border-radius: 20px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+        
+        .product-card:hover {
+            border-color: #e31b23;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(227, 27, 35, 0.3);
+        }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .product-card:hover::before {
+            left: 100%;
+        }
+        
+        .card-model {
+            color: #888;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #d4af37;
+            margin: 1rem 0;
+        }
+        
+        .card-year {
+            color: #888;
+            font-size: 0.9rem;
+            display: inline-block;
+            background: #1a1a1a;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+        }
+        
+        .view-3d-btn {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: #d4af37;
+            color: #000;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .view-3d-btn:hover {
+            background: #e31b23;
+            color: #fff;
+            transform: scale(1.1) rotate(360deg);
+            box-shadow: 0 0 30px rgba(227, 27, 35, 0.5);
+        }
+        
+        .filter-panel {
+            background: #141414;
+            border: 1px solid #d4af37;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.8rem 1.2rem;
+            background: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1rem;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #e31b23;
+            box-shadow: 0 0 10px rgba(227, 27, 35, 0.3);
+        }
+        
+        .price-filter {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .price-filter input {
+            width: 120px;
+            padding: 0.8rem;
+            background: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            color: #fff;
+        }
+        
+        .sort-select {
+            padding: 0.8rem 1.5rem;
+            background: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            color: #fff;
+            cursor: pointer;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .pagination button {
+            background: transparent;
+            border: 1px solid #d4af37;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 40px;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            background: #d4af37;
+            color: #000;
+        }
+        
+        .pagination button.active {
+            background: #d4af37;
+            color: #000;
+            border-color: #e31b23;
+            font-weight: bold;
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .loading-state {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+        }
+        
+        .error-state {
+            text-align: center;
+            padding: 3rem;
+            background: #141414;
+            border: 1px solid #e31b23;
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+        
+        .product-count {
+            text-align: center;
+            color: #888;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .filter-panel {
+                flex-direction: column;
+            }
+            
+            .price-filter {
+                width: 100%;
+            }
+            
+            .price-filter input {
+                flex: 1;
+            }
+            
+            .sort-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">
+            SkySwag
+            <small>sky is the limit</small>
+        </div>
+    </div>
+
+    <div class="app">
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item" onclick="navigateTo('catalog')">Каталог</span>
+                <span class="nav-item" onclick="navigateTo('services')">Услуги</span>
+                <span class="nav-item" onclick="navigateTo('about')">О компании</span>
+                <span class="nav-item" onclick="navigateTo('news')">Новости</span>
+                <span class="nav-item" onclick="navigateTo('leasing')">Лизинг / Кредитование</span>
+                <span class="nav-item" onclick="navigateTo('configurator')">Конфигуратор</span>
+                <span class="nav-item" onclick="navigateTo('models')">3D Модели</span>
+            </nav>
+            <button class="action-btn" onclick="navigateTo('catalog')">Получить предложение</button>
+        </header>
+
+        <main class="main-content">
+            <div class="catalog-header">
+                <h1 class="page-title">
+                    Каталог вертолетов 
+                    <span class="model-badge">3D модели</span>
+                </h1>
+                <div class="stats-badge" id="totalStats">Загрузка...</div>
+            </div>
+            
+            <!-- Панель фильтрации -->
+            <div class="filter-panel">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по модели или названию...">
+                
+                <div class="price-filter">
+                    <input type="number" id="minPrice" placeholder="Цена от, €" min="0" step="100000">
+                    <input type="number" id="maxPrice" placeholder="Цена до, €" min="0" step="100000">
+                </div>
+                
+                <select id="sortSelect" class="sort-select">
+                    <option value="">📊 Сортировка</option>
+                    <option value="price_asc">💰 Цена (возрастание)</option>
+                    <option value="price_desc">💰 Цена (убывание)</option>
+                    <option value="name_asc">📝 Название (А-Я)</option>
+                    <option value="name_desc">📝 Название (Я-А)</option>
+                </select>
+                
+                <button class="action-btn" onclick="applyFilters()">Применить</button>
+                <button class="action-btn" onclick="resetFilters()">Сбросить</button>
+            </div>
+
+            <!-- Состояние загрузки -->
+            <div id="loadingState" class="loading-state">
+                <div class="shimmer-logo" style="font-size: 2rem;">Загрузка товаров...</div>
+            </div>
+
+            <!-- Ошибка загрузки -->
+            <div id="errorState" class="error-state" style="display: none;">
+                <p style="font-size: 2rem; margin-bottom: 1rem;">❌</p>
+                <p style="font-size: 1.5rem; color: #e31b23;">Ошибка загрузки данных</p>
+                <p style="color: #888; margin: 1rem 0;">Сервер не отвечает или проблемы с сетью</p>
+                <button class="action-btn" onclick="loadProducts()">🔄 Повторить</button>
+            </div>
+
+            <!-- Сетка товаров -->
+            <div class="catalog-grid" id="productsGrid"></div>
+
+            <!-- Пагинация -->
+            <div class="pagination" id="pagination"></div>
+            
+            <!-- Счетчик товаров -->
+            <div id="productCount" class="product-count"></div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                    <a onclick="navigateTo('models')">3D Модели</a>
+                </div>
+                <div class="footer-contact">
+                    <p>info@skywag.ru</p>
+                    <p>Политика конфиденциальности</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/catalog.js"></script>
+</body>
+</html>

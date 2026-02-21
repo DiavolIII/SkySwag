@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - Услуги</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Стили для ленты услуг */
+        .services-showcase {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .services-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .services-header h1 {
+            font-size: 3rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .services-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #d4af37, #e31b23, #d4af37);
+        }
+        
+        .services-header p {
+            color: #888;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 2rem auto 0;
+        }
+        
+        /* Лента услуг */
+        .services-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .services-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #d4af37, #e31b23, #d4af37);
+            border-radius: 2px;
+        }
+        
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .service-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .service-content {
+            width: 45%;
+            background: #141414;
+            border: 2px solid #d4af37;
+            border-radius: 30px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .service-content:hover {
+            transform: scale(1.05);
+            border-color: #e31b23;
+            box-shadow: 0 0 30px rgba(227, 27, 35, 0.3);
+        }
+        
+        .service-content:hover .service-icon {
+            background: #e31b23;
+            color: #fff;
+        }
+        
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: #d4af37;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #000;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 3px solid #0a0a0a;
+            transition: all 0.3s;
+        }
+        
+        .service-marker {
+            width: 20px;
+            height: 20px;
+            background: #d4af37;
+            border: 4px solid #e31b23;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        
+        .service-content h2 {
+            color: #d4af37;
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem;
+            text-align: center;
+        }
+        
+        .service-content p {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .service-features {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+        
+        .service-features li {
+            color: #fff;
+            padding: 0.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+            border-bottom: 1px solid #333;
+        }
+        
+        .service-features li::before {
+            content: '→';
+            color: #d4af37;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .service-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .service-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            text-decoration: none;
+            border-radius: 40px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .service-link:hover {
+            background: #d4af37;
+            color: #000;
+        }
+        
+        /* Карточки услуг (сетка) */
+        .services-grid-modern {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .service-card-modern {
+            background: #141414;
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .service-card-modern:hover::before {
+            left: 100%;
+        }
+        
+        .service-card-modern:hover {
+            transform: translateY(-10px);
+            border-color: #e31b23;
+            box-shadow: 0 10px 30px rgba(227, 27, 35, 0.3);
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .service-card-modern h3 {
+            color: #d4af37;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .service-card-modern p {
+            color: #aaa;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-link {
+            color: #e31b23;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .card-link:hover {
+            color: #d4af37;
+            transform: translateX(5px);
+        }
+        
+        @media (max-width: 768px) {
+            .services-timeline::before {
+                left: 30px;
+            }
+            
+            .service-item,
+            .service-item:nth-child(even) {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-left: 60px;
+            }
+            
+            .service-content {
+                width: 100%;
+            }
+            
+            .service-marker {
+                left: 30px;
+            }
+            
+            .services-grid-modern {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">
+            SkySwag
+            <small>sky is the limit</small>
+        </div>
+    </div>
+
+    <div class="app">
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item" onclick="navigateTo('catalog')">Каталог</span>
+                <span class="nav-item active" onclick="navigateTo('services')">Услуги</span>
+                <span class="nav-item" onclick="navigateTo('about')">О компании</span>
+                <span class="nav-item" onclick="navigateTo('news')">Новости</span>
+                <span class="nav-item" onclick="navigateTo('leasing')">Лизинг / Кредитование</span>
+                <span class="nav-item" onclick="navigateTo('configurator')">Конфигуратор</span>
+                <span class="nav-item" onclick="navigateTo('models')">3D Модели</span>
+            </nav>
+            <button class="action-btn" onclick="navigateTo('catalog')">Получить предложение</button>
+        </header>
+
+        <main class="main-content">
+            <div class="services-showcase">
+                <div class="services-header">
+                    <h1>Наши услуги</h1>
+                    <p>Полный спектр услуг по покупке, обслуживанию и эксплуатации вертолетов</p>
+                </div>
+
+                <!-- Временная лента (основные услуги) -->
+                <div class="services-timeline">
+                    <!-- Лизинг и кредитование -->
+                    <div class="service-item">
+                        <div class="service-marker"></div>
+                        <div class="service-content" onclick="navigateTo('leasing')">
+                            <div class="service-icon">💰</div>
+                            <h2>Лизинг и кредитование</h2>
+                            <p>Предоставляем выгодные финансовые решения с гибкими условиями оплаты. Работаем с ведущими банками и лизинговыми компаниями.</p>
+                            <ul class="service-features">
+                                <li>Ставка от 8% годовых</li>
+                                <li>Первоначальный взнос от 15%</li>
+                                <li>Срок до 7 лет</li>
+                                <li>Индивидуальные условия</li>
+                                <li>Одобрение за 24 часа</li>
+                            </ul>
+                            <div class="service-link">Подробнее о лизинге →</div>
+                        </div>
+                    </div>
+
+                    <!-- Доставка по всему миру -->
+                    <div class="service-item">
+                        <div class="service-marker"></div>
+                        <div class="service-content" onclick="showContactForm('delivery')">
+                            <div class="service-icon">✈️</div>
+                            <h2>Доставка по всему миру</h2>
+                            <p>Организуем быструю и безопасную доставку вертолётов и запчастей в любую точку мира. Полное таможенное оформление.</p>
+                            <ul class="service-features">
+                                <li>Авиадоставка (3-7 дней)</li>
+                                <li>Морская доставка (14-30 дней)</li>
+                                <li>Автотранспорт (Европа)</li>
+                                <li>Страхование груза</li>
+                                <li>Таможенное оформление</li>
+                            </ul>
+                            <div class="service-link">Рассчитать стоимость →</div>
+                        </div>
+                    </div>
+
+                    <!-- Покупка вертолетов -->
+                    <div class="service-item">
+                        <div class="service-marker"></div>
+                        <div class="service-content" onclick="navigateTo('catalog')">
+                            <div class="service-icon">🏷️</div>
+                            <h2>Покупка вертолетов</h2>
+                            <p>Предлагаем новые и подержанные вертолёты напрямую от производителей и надёжных поставщиков. Помогаем подобрать оптимальный вариант.</p>
+                            <ul class="service-features">
+                                <li>Проверка истории</li>
+                                <li>Технический аудит</li>
+                                <li>Юридическое сопровождение</li>
+                                <li>Постановка на учет</li>
+                                <li>Гарантия 1 год</li>
+                            </ul>
+                            <div class="service-link">Смотреть каталог →</div>
+                        </div>
+                    </div>
+
+                    <!-- Техническое обслуживание -->
+                    <div class="service-item">
+                        <div class="service-marker"></div>
+                        <div class="service-content" onclick="showContactForm('service')">
+                            <div class="service-icon">🔧</div>
+                            <h2>Техническое обслуживание</h2>
+                            <p>Сертифицированный сервисный центр. Проведение всех видов работ: от регламентного ТО до капитального ремонта.</p>
+                            <ul class="service-features">
+                                <li>Регламентное ТО</li>
+                                <li>Капитальный ремонт</li>
+                                <li>Диагностика</li>
+                                <li>Запчасти в наличии</li>
+                                <li>Выездное обслуживание</li>
+                            </ul>
+                            <div class="service-link">Записаться на ТО →</div>
+                        </div>
+                    </div>
+
+                    <!-- Страхование -->
+                    <div class="service-item">
+                        <div class="service-marker"></div>
+                        <div class="service-content" onclick="showContactForm('insurance')">
+                            <div class="service-icon">🛡️</div>
+                            <h2>Страхование</h2>
+                            <p>Полный спектр страховых услуг для авиационной техники. Сотрудничаем с ведущими страховыми компаниями.</p>
+                            <ul class="service-features">
+                                <li>КАСКО</li>
+                                <li>Страхование ответственности</li>
+                                <li>Страхование экипажа</li>
+                                <li>Страхование грузов</li>
+                                <li>Страхование от войны</li>
+                            </ul>
+                            <div class="service-link">Получить расчет →</div>
+                        </div>
+                    </div>
+
+                    <!-- Обучение пилотов -->
+                    <div class="service-item">
+                        <div class="service-marker"></div>
+                        <div class="service-content" onclick="showContactForm('training')">
+                            <div class="service-icon">🎓</div>
+                            <h2>Обучение пилотов</h2>
+                            <p>Подготовка и переподготовка пилотов. Теоретические и практические занятия на сертифицированных тренажерах.</p>
+                            <ul class="service-features">
+                                <li>Первичное обучение</li>
+                                <li>Повышение квалификации</li>
+                                <li>Тренажерная подготовка</li>
+                                <li>Экзамены и сертификация</li>
+                                <li>Инструкторы с 10+ лет стажа</li>
+                            </ul>
+                            <div class="service-link">Записаться на курс →</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Дополнительные услуги (сетка) -->
+                <h2 style="color: #d4af37; text-align: center; margin: 4rem 0 2rem;">Дополнительные услуги</h2>
+                
+                <div class="services-grid-modern">
+                    <div class="service-card-modern" onclick="showContactForm('consulting')">
+                        <div class="card-icon">📋</div>
+                        <h3>Консалтинг</h3>
+                        <p>Помощь в выборе вертолета, анализ рынка, консультации экспертов</p>
+                        <span class="card-link">Узнать больше →</span>
+                    </div>
+
+                    <div class="service-card-modern" onclick="showContactForm('rent')">
+                        <div class="card-icon">📅</div>
+                        <h3>Аренда вертолетов</h3>
+                        <p>Краткосрочная и долгосрочная аренда с экипажем</p>
+                        <span class="card-link">Узнать больше →</span>
+                    </div>
+
+                    <div class="service-card-modern" onclick="showContactForm('charter')">
+                        <div class="card-icon">🌟</div>
+                        <h3>VIP-чартеры</h3>
+                        <p>Организация VIP перелетов, трансферы, экскурсии</p>
+                        <span class="card-link">Узнать больше →</span>
+                    </div>
+
+                    <div class="service-card-modern" onclick="showContactForm('medical')">
+                        <div class="card-icon">🏥</div>
+                        <h3>Санавиация</h3>
+                        <p>Оборудование вертолетов под медицинские задачи</p>
+                        <span class="card-link">Узнать больше →</span>
+                    </div>
+
+                    <div class="service-card-modern" onclick="showContactForm('patrol')">
+                        <div class="card-icon">🚔</div>
+                        <h3>Патрулирование</h3>
+                        <p>Оснащение для МЧС, полиции, охраны лесов</p>
+                        <span class="card-link">Узнать больше →</span>
+                    </div>
+
+                    <div class="service-card-modern" onclick="showContactForm('cargo')">
+                        <div class="card-icon">📦</div>
+                        <h3>Грузоперевозки</h3>
+                        <p>Транспортировка грузов в труднодоступные места</p>
+                        <span class="card-link">Узнать больше →</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                    <a onclick="navigateTo('models')">3D Модели</a>
+                </div>
+                <div class="footer-contact">
+                    <p>info@skywag.ru</p>
+                    <p>Политика конфиденциальности</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        function showContactForm(service) {
+            const serviceNames = {
+                'delivery': 'Доставка',
+                'service': 'Техническое обслуживание',
+                'insurance': 'Страхование',
+                'training': 'Обучение',
+                'consulting': 'Консалтинг',
+                'rent': 'Аренда',
+                'charter': 'VIP-чартеры',
+                'medical': 'Санавиация',
+                'patrol': 'Патрулирование',
+                'cargo': 'Грузоперевозки'
+            };
+            
+            alert(`Заявка на услугу: ${serviceNames[service] || service}\n\nНаш менеджер свяжется с вами в ближайшее время.`);
+        }
+    </script>
+</body>
+</html>

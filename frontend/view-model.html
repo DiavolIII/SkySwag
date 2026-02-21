@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - 3D Просмотр</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        #model-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0a0a0a;
+        }
+        
+        .controls-panel {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 20, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid #d4af37;
+            border-radius: 60px;
+            padding: 15px 30px;
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+        
+        .control-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid transparent;
+        }
+        
+        .control-btn:hover {
+            border-color: #d4af37;
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .control-btn.rotate-active {
+            background: #d4af37;
+            color: #000;
+        }
+        
+        .model-title {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border-left: 4px solid #e31b23;
+            border-right: 2px solid #d4af37;
+            padding: 15px 30px;
+            border-radius: 50px;
+            color: #d4af37;
+            font-size: 1.5rem;
+            font-weight: 600;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        .close-btn {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #e31b23;
+            border: 2px solid #d4af37;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(227, 27, 35, 0.5);
+        }
+        
+        .close-btn:hover {
+            transform: rotate(90deg);
+            background: #d4af37;
+            color: #000;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: opacity 0.5s;
+        }
+        
+        .loading-spinner {
+            text-align: center;
+        }
+        
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid #d4af37;
+            border-top-color: #e31b23;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        .loading-text {
+            color: #d4af37;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+        
+        .error-box {
+            background: #1a1a1a;
+            border: 2px solid #e31b23;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .error-box h2 {
+            color: #e31b23;
+            margin-bottom: 1rem;
+        }
+        
+        .error-box p {
+            color: #888;
+            margin: 0.5rem 0;
+        }
+        
+        .error-box button {
+            margin-top: 1.5rem;
+            padding: 0.8rem 2rem;
+            background: #d4af37;
+            border: none;
+            border-radius: 30px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .error-box button:hover {
+            background: #e31b23;
+            color: #fff;
+            transform: scale(1.05);
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .model-info {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: rgba(0,0,0,0.7);
+            border: 1px solid #d4af37;
+            border-radius: 20px;
+            padding: 10px 20px;
+            color: #888;
+            font-size: 0.9rem;
+            backdrop-filter: blur(5px);
+        }
+        
+        .protocol-warning {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a1a;
+            border: 3px solid #e31b23;
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            z-index: 3000;
+            max-width: 600px;
+        }
+        
+        .protocol-warning h1 {
+            color: #e31b23;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .protocol-warning p {
+            color: #888;
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+        
+        .protocol-warning code {
+            background: #000;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            color: #d4af37;
+            display: inline-block;
+            margin: 0.5rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .controls-panel {
+                bottom: 20px;
+                padding: 10px;
+                gap: 10px;
+                flex-wrap: wrap;
+                width: 90%;
+                justify-content: center;
+            }
+            
+            .control-btn {
+                padding: 8px 12px;
+                font-size: 1rem;
+            }
+            
+            .model-title {
+                top: 20px;
+                left: 20px;
+                font-size: 1.2rem;
+                padding: 10px 20px;
+            }
+            
+            .close-btn {
+                top: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="model-title" id="modelTitle">Загрузка...</div>
+    <div class="close-btn" onclick="closeViewer()">✕</div>
+    
+    <div id="model-container"></div>
+    
+    <div class="controls-panel">
+        <button class="control-btn" onclick="toggleRotation()" id="rotateBtn">
+            <span>🔄</span> Автовращение
+        </button>
+        <button class="control-btn" onclick="resetView()">
+            <span>⟲</span> Сброс
+        </button>
+        <button class="control-btn" onclick="toggleFullscreen()">
+            <span>⛶</span> На весь экран
+        </button>
+    </div>
+    
+    <div class="model-info" id="modelInfo">
+        🚁 Вращайте мышью • Колесико для zoom
+    </div>
+    
+    <div class="loading-overlay" id="loading">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <div class="loading-text">Загрузка 3D модели...</div>
+        </div>
+    </div>
+
+    <!-- Three.js библиотеки -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        // ПРОВЕРКА ПРОТОКОЛА
+        if (window.location.protocol === 'file:') {
+            // Показываем предупреждение
+            document.body.innerHTML = `
+                <div class="protocol-warning">
+                    <h1>🚁 ОШИБКА ЗАПУСКА</h1>
+                    <p>Вы открыли файл напрямую через <code>file://</code></p>
+                    <p>Для работы 3D моделей необходимо запустить сервер:</p>
+                    <code>python server.py</code>
+                    <p>или используйте батник:</p>
+                    <code>epic-start.bat</code>
+                    <p style="color: #d4af37; margin-top: 2rem;">👉 Откройте http://localhost:8000/catalog.html</p>
+                    <button onclick="window.location.href='catalog.html'" style="margin-top: 2rem; padding: 1rem 3rem; background: #d4af37; border: none; border-radius: 30px; cursor: pointer; font-size: 1.2rem;">Вернуться в каталог</button>
+                </div>
+            `;
+            throw new Error('Нельзя открывать файл напрямую! Используйте сервер.');
+        }
+
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        // Получаем параметры из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const modelFile = urlParams.get('file') || 'helicopter.glb';
+        const modelName = urlParams.get('name') || '3D Модель';
+        
+        // Обновляем заголовок
+        document.getElementById('modelTitle').textContent = `🚁 ${modelName}`;
+        
+        // Инициализация сцены
+        const container = document.getElementById('model-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0a0a);
+        
+        // Камера
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(5, 3, 8);
+        
+        // Рендерер
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+        
+        // Контролы
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 2.0;
+        controls.enableZoom = true;
+        controls.maxPolarAngle = Math.PI / 2;
+        controls.target.set(0, 1, 0);
+        
+        // Освещение
+        const ambientLight = new THREE.AmbientLight(0x404060);
+        scene.add(ambientLight);
+        
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+        dirLight.position.set(2, 5, 3);
+        dirLight.castShadow = true;
+        dirLight.shadow.mapSize.width = 1024;
+        dirLight.shadow.mapSize.height = 1024;
+        scene.add(dirLight);
+        
+        const goldLight = new THREE.PointLight(0xd4af37, 0.8);
+        goldLight.position.set(-3, 2, -2);
+        scene.add(goldLight);
+        
+        const redLight = new THREE.PointLight(0xe31b23, 0.5);
+        redLight.position.set(3, 1, 2);
+        scene.add(redLight);
+        
+        const fillLight = new THREE.PointLight(0xffffff, 0.5);
+        fillLight.position.set(1, 2, 4);
+        scene.add(fillLight);
+        
+        // Пол
+        const gridHelper = new THREE.GridHelper(20, 20, 0xd4af37, 0x333333);
+        gridHelper.position.y = -0.01;
+        scene.add(gridHelper);
+        
+        const planeGeometry = new THREE.CircleGeometry(10, 32);
+        const planeMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0x1a1a1a, 
+            roughness: 0.4, 
+            metalness: 0.6
+        });
+        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.rotation.x = -Math.PI / 2;
+        plane.position.y = 0;
+        plane.receiveShadow = true;
+        scene.add(plane);
+        
+        // Загрузка модели
+        const loader = new GLTFLoader();
+        // Формируем правильный URL
+        const baseUrl = window.location.origin;
+        const modelPath = `assets/models/${modelFile}`;
+        
+        console.log('📂 Загрузка модели:', modelPath);
+        console.log('📍 Базовый URL:', baseUrl);
+        console.log('📍 Полный URL:', new URL(modelPath, window.location.href).href);
+        
+        loader.load(
+            modelPath,
+            (gltf) => {
+                const model = gltf.scene;
+                
+                // Вычисляем размер модели
+                const box = new THREE.Box3().setFromObject(model);
+                const size = box.getSize(new THREE.Vector3());
+                const center = box.getCenter(new THREE.Vector3());
+                
+                // Масштабируем под размер экрана
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 4 / maxDim;
+                model.scale.setScalar(scale);
+                
+                // Центрируем
+                model.position.set(0, 1, 0);
+                
+                // Настраиваем тени
+                model.traverse((node) => {
+                    if (node.isMesh) {
+                        node.castShadow = true;
+                        node.receiveShadow = true;
+                        
+                        if (node.material) {
+                            if (Array.isArray(node.material)) {
+                                node.material.forEach(mat => {
+                                    mat.roughness = 0.3;
+                                    mat.metalness = 0.7;
+                                });
+                            } else {
+                                node.material.roughness = 0.3;
+                                node.material.metalness = 0.7;
+                            }
+                        }
+                    }
+                });
+                
+                scene.add(model);
+                
+                // Убираем загрузку
+                document.getElementById('loading').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading').style.display = 'none';
+                }, 500);
+                
+                console.log('✅ Модель загружена');
+            },
+            (xhr) => {
+                const percent = Math.floor((xhr.loaded / xhr.total) * 100);
+                document.querySelector('.loading-text').textContent = `Загрузка: ${percent}%`;
+            },
+            (error) => {
+                console.error('❌ Ошибка загрузки:', error);
+                
+                // Показываем красивое сообщение об ошибке
+                document.getElementById('loading').innerHTML = `
+                    <div class="error-box">
+                        <h2>❌ Ошибка загрузки модели</h2>
+                        <p>Файл: <code style="color: #d4af37;">${modelFile}</code></p>
+                        <p>Путь: <code style="color: #888;">${modelPath}</code></p>
+                        <p style="color: #e31b23; margin-top: 1rem;">Возможные причины:</p>
+                        <p>• Файл не найден в папке assets/models/</p>
+                        <p>• Неправильное имя файла</p>
+                        <p>• Файл поврежден</p>
+                        <button onclick="location.reload()">🔄 Повторить</button>
+                        <button onclick="window.location.href='catalog.html'" style="margin-left: 1rem; background: #e31b23; color: #fff;">◀ Назад</button>
+                    </div>
+                `;
+            }
+        );
+        
+        // Анимация
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+        
+        // Ресайз
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // Глобальные функции для кнопок
+        window.toggleRotation = () => {
+            controls.autoRotate = !controls.autoRotate;
+            const btn = document.getElementById('rotateBtn');
+            if (controls.autoRotate) {
+                btn.classList.add('rotate-active');
+            } else {
+                btn.classList.remove('rotate-active');
+            }
+        };
+        
+        window.resetView = () => {
+            camera.position.set(5, 3, 8);
+            controls.target.set(0, 1, 0);
+            controls.update();
+        };
+        
+        window.toggleFullscreen = () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        };
+        
+        window.closeViewer = () => {
+            window.location.href = 'catalog.html';
+        };
+    </script>
+</body>
+</html>

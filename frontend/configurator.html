@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - Конфигуратор</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">
+            SkySwag
+            <small>sky is the limit</small>
+        </div>
+    </div>
+
+    <div class="app">
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item" onclick="navigateTo('catalog')">Каталог</span>
+                <span class="nav-item" onclick="navigateTo('services')">Услуги</span>
+                <span class="nav-item" onclick="navigateTo('about')">О компании</span>
+                <span class="nav-item" onclick="navigateTo('news')">Новости</span>
+                <span class="nav-item" onclick="navigateTo('leasing')">Лизинг / Кредитование</span>
+                <span class="nav-item" onclick="navigateTo('configurator')">Конфигуратор</span>
+            </nav>
+            <button class="action-btn" onclick="navigateTo('catalog')">Получить предложение</button>
+        </header>
+
+        <main class="main-content">
+            <h1 class="page-title">Конфигуратор вертолета</h1>
+            <p class="configurator-subtitle">Соберите свой идеальный вертолет</p>
+
+            <div class="configurator-layout">
+                <!-- Левая колонка - выбор модели -->
+                <div class="config-left">
+                    <div class="config-section">
+                        <h2>1. Выберите модель</h2>
+                        <div class="model-selector">
+                            <div class="model-option" onclick="selectModel('h125')">
+                                <div class="model-name">Airbus H125</div>
+                                <div class="model-price">от 4 550 000 €</div>
+                                <div class="model-specs">Многоцелевой, 6 мест</div>
+                            </div>
+                            <div class="model-option" onclick="selectModel('h130')">
+                                <div class="model-name">Airbus H130</div>
+                                <div class="model-price">от 6 100 000 €</div>
+                                <div class="model-specs">VIP, 7 мест</div>
+                            </div>
+                            <div class="model-option" onclick="selectModel('r66')">
+                                <div class="model-name">Robinson R66</div>
+                                <div class="model-price">от 1 600 000 €</div>
+                                <div class="model-specs">Турбинный, 5 мест</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="config-section" id="colorSection" style="display: none;">
+                        <h2>2. Выберите цвет</h2>
+                        <div class="color-options">
+                            <div class="color-option" style="background: #000000;" onclick="selectColor('black')"></div>
+                            <div class="color-option" style="background: #ffffff;" onclick="selectColor('white')"></div>
+                            <div class="color-option" style="background: #e31b23;" onclick="selectColor('red')"></div>
+                            <div class="color-option" style="background: #d4af37;" onclick="selectColor('gold')"></div>
+                            <div class="color-option" style="background: #2c3e50;" onclick="selectColor('midnight')"></div>
+                            <div class="color-option" style="background: #87CEEB;" onclick="selectColor('sky')"></div>
+                        </div>
+                    </div>
+
+                    <div class="config-section" id="interiorSection" style="display: none;">
+                        <h2>3. Выберите интерьер</h2>
+                        <select class="config-select" id="interiorSelect" onchange="selectInterior(this.value)">
+                            <option value="leather_cream">Кожа кремовая (+0 €)</option>
+                            <option value="leather_brown">Кожа коричневая (+0 €)</option>
+                            <option value="alcantara">Алькантара черная (+15 000 €)</option>
+                            <option value="vip">VIP салон (+75 000 €)</option>
+                            <option value="executive">Executive (+120 000 €)</option>
+                        </select>
+                    </div>
+
+                    <div class="config-section" id="extrasSection" style="display: none;">
+                        <h2>4. Дополнительно</h2>
+                        <div class="extras-list">
+                            <label><input type="checkbox" value="ac" onchange="updateExtras()"> Кондиционер (+45 000 €)</label>
+                            <label><input type="checkbox" value="avionics" onchange="updateExtras()"> Улучшенная авионика (+120 000 €)</label>
+                            <label><input type="checkbox" value="sound" onchange="updateExtras()"> Шумоизоляция (+35 000 €)</label>
+                            <label><input type="checkbox" value="extrafuel" onchange="updateExtras()"> Дополнительные баки (+60 000 €)</label>
+                            <label><input type="checkbox" value="vip" onchange="updateExtras()"> VIP трансформация (+95 000 €)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Правая колонка - результат -->
+                <div class="config-right">
+                    <div class="config-preview" id="configPreview">
+                        <div class="preview-placeholder">🚁</div>
+                        <div class="preview-model" id="previewModel">Выберите модель</div>
+                    </div>
+
+                    <div class="config-total" id="totalSection" style="display: none;">
+                        <h3>Итоговая стоимость</h3>
+                        <div class="total-price" id="totalPrice">0 €</div>
+                        <div class="price-breakdown" id="priceBreakdown"></div>
+                        <button class="action-btn order-btn" onclick="showOrderForm()">Оформить заказ</button>
+                    </div>
+
+                    <div class="order-form" id="orderForm" style="display: none;">
+                        <h3>Оформление заказа</h3>
+                        <form id="configOrderForm" onsubmit="submitOrder(event)">
+                            <input type="text" placeholder="Ваше имя" name="name" required>
+                            <input type="tel" placeholder="Телефон" name="phone" required>
+                            <input type="email" placeholder="Email" name="email">
+                            <textarea placeholder="Комментарий" name="comment"></textarea>
+                            <button type="submit" class="action-btn">Отправить заказ</button>
+                            <button type="button" class="action-btn" onclick="hideOrderForm()">Отмена</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                </div>
+                <div class="footer-contact">
+                    <p>info@skywag.ru</p>
+                    <p>Политика конфиденциальности</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/configurator.js"></script>
+</body>
+</html>

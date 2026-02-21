@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - Главная</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Анимация загрузки -->
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">
+            SkySwag
+            <small>sky is the limit</small>
+        </div>
+    </div>
+
+    <div class="app">
+        <!-- Шапка сайта -->
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item" onclick="navigateTo('catalog')">Каталог</span>
+                <span class="nav-item" onclick="navigateTo('services')">Услуги</span>
+                <span class="nav-item" onclick="navigateTo('about')">О компании</span>
+                <span class="nav-item" onclick="navigateTo('news')">Новости</span>
+                <span class="nav-item" onclick="navigateTo('leasing')">Лизинг / Кредитование</span>
+                <span class="nav-item" onclick="navigateTo('configurator')">Конфигуратор</span>
+            </nav>
+            <button class="action-btn" onclick="navigateTo('catalog')">Получить предложение</button>
+        </header>
+
+        <!-- Основной контент -->
+        <main class="main-content">
+            <!-- Hero секция -->
+            <section class="hero-section">
+                <h1 class="hero-title">Ваш личный вертолет</h1>
+                <p class="hero-subtitle">Закажите у надежного поставщика SkySwag</p>
+                <p class="hero-accent">Закрепите за собой условия акции</p>
+                <button class="action-btn hero-btn" onclick="navigateTo('catalog')">Смотреть модели</button>
+            </section>
+
+            <!-- Популярные модели -->
+            <section class="popular-section">
+                <h2 class="section-title">Популярные модели</h2>
+                <div class="catalog-grid" id="popularProducts"></div>
+            </section>
+
+            <!-- Оценка вертолета -->
+            <section class="estimate-section">
+                <h2 class="section-title">Оценка вертолета</h2>
+                <p class="estimate-subtitle">Узнайте, сколько стоит Ваш вертолет</p>
+                
+                <form class="estimate-form" id="estimateForm">
+                    <input type="text" placeholder="Модель" name="model" required>
+                    <input type="number" placeholder="Год" name="year" required>
+                    <input type="number" placeholder="Часы" name="hours" required>
+                    <input type="tel" placeholder="Номер телефона" name="phone" required>
+                    <input type="text" placeholder="Имя" name="name" required>
+                    <button type="submit" class="action-btn submit-btn">Отправить на оценку</button>
+                </form>
+                
+                <p class="estimate-note">* Мы оцениваем вертолет, анализируя актуальные предложения</p>
+            </section>
+        </main>
+
+        <!-- Подвал -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                </div>
+                <div class="footer-contact">
+                    <p>info@skywag.ru</p>
+                    <p>Политика конфиденциальности</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

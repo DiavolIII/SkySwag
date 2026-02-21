@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - Лизинг и кредитование</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">
+            SkySwag
+            <small>sky is the limit</small>
+        </div>
+    </div>
+
+    <div class="app">
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item" onclick="navigateTo('catalog')">Каталог</span>
+                <span class="nav-item" onclick="navigateTo('services')">Услуги</span>
+                <span class="nav-item" onclick="navigateTo('about')">О компании</span>
+                <span class="nav-item" onclick="navigateTo('news')">Новости</span>
+                <span class="nav-item" onclick="navigateTo('leasing')">Лизинг / Кредитование</span>
+                <span class="nav-item" onclick="navigateTo('configurator')">Конфигуратор</span>
+            </nav>
+            <button class="action-btn" onclick="navigateTo('catalog')">Получить предложение</button>
+        </header>
+
+        <main class="main-content">
+            <h1 class="page-title">Лизинг и кредитование</h1>
+            
+            <div class="leasing-hero">
+                <p class="leasing-description">Предоставляем выгодные финансовые решения с гибкими условиями оплаты. Работаем с ведущими банками и лизинговыми компаниями.</p>
+            </div>
+
+            <!-- Калькулятор -->
+            <div class="leasing-calculator">
+                <h2 class="section-title">Калькулятор лизинга</h2>
+                
+                <div class="calculator-row">
+                    <div class="calculator-item">
+                        <label>Стоимость вертолета, €</label>
+                        <input type="range" id="priceRange" min="1000000" max="10000000" step="100000" value="4500000">
+                        <div class="range-value" id="priceValue">4 500 000 €</div>
+                    </div>
+                    
+                    <div class="calculator-item">
+                        <label>Первоначальный взнос, %</label>
+                        <input type="range" id="depositRange" min="10" max="50" step="5" value="20">
+                        <div class="range-value" id="depositValue">20%</div>
+                    </div>
+                    
+                    <div class="calculator-item">
+                        <label>Срок кредита, лет</label>
+                        <input type="range" id="termRange" min="1" max="7" step="1" value="5">
+                        <div class="range-value" id="termValue">5 лет</div>
+                    </div>
+                </div>
+
+                <div class="calculator-result">
+                    <div class="result-item">
+                        <span class="label">Первоначальный взнос:</span>
+                        <span class="value" id="initialPayment">900 000 €</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Ежемесячный платеж:</span>
+                        <span class="value" id="monthlyPayment">72 500 €</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Переплата за весь срок:</span>
+                        <span class="value" id="overpayment">850 000 €</span>
+                    </div>
+                </div>
+
+                <button class="action-btn calculator-btn" onclick="showLeasingForm()">Получить индивидуальное предложение</button>
+            </div>
+
+            <!-- Партнеры -->
+            <div class="partners-section">
+                <h2 class="section-title">Наши партнеры</h2>
+                <div class="partners-grid">
+                    <div class="partner-card">СБЕР БАНК</div>
+                    <div class="partner-card">ГАЗПРОМБАНК</div>
+                    <div class="partner-card">ВТБ</div>
+                    <div class="partner-card">АЛЬФА-БАНК</div>
+                    <div class="partner-card">РОССЕЛЬХОЗБАНК</div>
+                    <div class="partner-card">ПСБ</div>
+                </div>
+            </div>
+
+            <!-- Преимущества -->
+            <div class="leasing-features">
+                <h2 class="section-title">Преимущества лизинга от SkySwag</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Быстрое одобрение</h3>
+                        <p>Решение за 24 часа</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📉</div>
+                        <h3>Низкие ставки</h3>
+                        <p>От 8% годовых</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤝</div>
+                        <h3>Индивидуальный подход</h3>
+                        <p>Учитываем ваш бизнес</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📄</div>
+                        <h3>Минимум документов</h3>
+                        <p>Упрощенная процедура</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                </div>
+                <div class="footer-contact">
+                    <p>info@skywag.ru</p>
+                    <p>Политика конфиденциальности</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/leasing.js"></script>
+</body>
+</html>

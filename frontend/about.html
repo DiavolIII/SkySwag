@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - О компании</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Стили для галереи */
+        .about-showcase {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .about-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .about-header h1 {
+            font-size: 3rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+        
+        .about-header p {
+            color: #aaa;
+            font-size: 1.2rem;
+        }
+        
+        /* Галерея */
+        .gallery-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            margin: 2rem 0;
+            overflow: hidden;
+            border-radius: 30px;
+            border: 2px solid #d4af37;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+        
+        .gallery-track {
+            display: flex;
+            width: 400%;
+            height: 100%;
+            transition: transform 1s ease;
+        }
+        
+        .gallery-slide {
+            width: 25%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.4);
+            transition: all 0.5s;
+        }
+        
+        .gallery-slide:hover .slide-background {
+            filter: brightness(0.6);
+            transform: scale(1.05);
+        }
+        
+        .slide-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+            width: 80%;
+            max-width: 600px;
+            z-index: 10;
+        }
+        
+        .slide-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .slide-title {
+            font-size: 2.5rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .slide-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .slide-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #d4af37;
+        }
+        
+        .stat-label {
+            color: #fff;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Отзывы в слайде */
+        .testimonial {
+            background: rgba(0,0,0,0.7);
+            border-left: 4px solid #e31b23;
+            border-right: 2px solid #d4af37;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-top: 1rem;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-author {
+            color: #d4af37;
+            font-weight: bold;
+        }
+        
+        .testimonial-position {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        /* Индикаторы */
+        .gallery-indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #d4af37;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .indicator.active {
+            background: #d4af37;
+            transform: scale(1.2);
+            box-shadow: 0 0 10px #d4af37;
+        }
+        
+        .indicator:hover {
+            background: #e31b23;
+        }
+        
+        /* Кнопки навигации */
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(0,0,0,0.5);
+            border: 2px solid #d4af37;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.3s;
+        }
+        
+        .gallery-nav:hover {
+            background: #d4af37;
+            color: #000;
+        }
+        
+        .gallery-nav.prev {
+            left: 20px;
+        }
+        
+        .gallery-nav.next {
+            right: 20px;
+        }
+        
+        /* Статистика внизу */
+        .company-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+            padding: 2rem;
+            background: #141414;
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+        }
+        
+        .stat-card {
+            text-align: center;
+        }
+        
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #d4af37;
+        }
+        
+        .stat-card .label {
+            color: #888;
+            margin-top: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .gallery-container {
+                height: 500px;
+            }
+            
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            
+            .slide-text {
+                font-size: 1rem;
+            }
+            
+            .slide-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .company-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .gallery-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">
+            SkySwag
+            <small>sky is the limit</small>
+        </div>
+    </div>
+
+    <div class="app">
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item" onclick="navigateTo('catalog')">Каталог</span>
+                <span class="nav-item" onclick="navigateTo('services')">Услуги</span>
+                <span class="nav-item active" onclick="navigateTo('about')">О компании</span>
+                <span class="nav-item" onclick="navigateTo('news')">Новости</span>
+                <span class="nav-item" onclick="navigateTo('leasing')">Лизинг / Кредитование</span>
+                <span class="nav-item" onclick="navigateTo('configurator')">Конфигуратор</span>
+                <span class="nav-item" onclick="navigateTo('models')">3D Модели</span>
+            </nav>
+            <button class="action-btn" onclick="navigateTo('catalog')">Получить предложение</button>
+        </header>
+
+        <main class="main-content">
+            <div class="about-showcase">
+                <div class="about-header">
+                    <h1>О компании SkySwag</h1>
+                    <p>Ваш надежный партнер в мире авиации с 2015 года</p>
+                </div>
+
+                <!-- Галерея с авто-прокруткой -->
+                <div class="gallery-container">
+                    <div class="gallery-track" id="galleryTrack">
+                        <!-- Слайд 1: О компании -->
+                        <div class="gallery-slide">
+                            <div class="slide-background" style="background-image: url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1200');"></div>
+                            <div class="slide-content">
+                                <div class="slide-icon">🚁</div>
+                                <div class="slide-title">SkySwag</div>
+                                <div class="slide-text">Лидер рынка вертолетной индустрии с 2015 года. Мы объединяем профессионалов с многолетним опытом и современные технологии.</div>
+                                <div class="slide-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-number">10+</div>
+                                        <div class="stat-label">лет опыта</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">500+</div>
+                                        <div class="stat-label">вертолетов</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">20+</div>
+                                        <div class="stat-label">стран</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Слайд 2: Отзывы клиентов -->
+                        <div class="gallery-slide">
+                            <div class="slide-background" style="background-image: url('https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=1200');"></div>
+                            <div class="slide-content">
+                                <div class="slide-icon">⭐</div>
+                                <div class="slide-title">Отзывы клиентов</div>
+                                <div class="testimonial">
+                                    <div class="testimonial-text">"Работаем с SkySwag более 5 лет. Всегда отличное качество, четкое соблюдение сроков и профессиональный подход. Рекомендую как надежного партнера."</div>
+                                    <div class="testimonial-author">Александр Петров</div>
+                                    <div class="testimonial-position">Генеральный директор, Авиа-Групп</div>
+                                </div>
+                                <div class="testimonial" style="margin-top: 1rem;">
+                                    <div class="testimonial-text">"Благодаря SkySwag мы обновили парк вертолетов для санитарной авиации. Отличное качество и поддержка на всех этапах."</div>
+                                    <div class="testimonial-author">Михаил Соколов</div>
+                                    <div class="testimonial-position">Главврач, Санавиация РФ</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Слайд 3: Достижения -->
+                        <div class="gallery-slide">
+                            <div class="slide-background" style="background-image: url('https://images.unsplash.com/photo-1579165466991-4671351aec7a?w=1200');"></div>
+                            <div class="slide-content">
+                                <div class="slide-icon">🏆</div>
+                                <div class="slide-title">Наши достижения</div>
+                                <div class="slide-stats" style="flex-direction: column; gap: 1rem;">
+                                    <div class="stat-item">
+                                        <div class="stat-number">2023</div>
+                                        <div class="stat-label">Лучший дилер Airbus Helicopters в Восточной Европе</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">2022</div>
+                                        <div class="stat-label">Премия "Золотой винт" за вклад в развитие авиации</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">2021</div>
+                                        <div class="stat-label">Сертифицированный центр Robinson Helicopter</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">2020</div>
+                                        <div class="stat-label">100-й проданный вертолет</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Слайд 4: Партнеры и клиенты -->
+                        <div class="gallery-slide">
+                            <div class="slide-background" style="background-image: url('https://images.unsplash.com/photo-1520437358207-323b43b50729?w=1200');"></div>
+                            <div class="slide-content">
+                                <div class="slide-icon">🤝</div>
+                                <div class="slide-title">Нам доверяют</div>
+                                <div class="slide-stats" style="grid-template-columns: repeat(2,1fr); display: grid; gap: 2rem;">
+                                    <div>Газпром Авиа</div>
+                                    <div>Росавиация</div>
+                                    <div>МЧС России</div>
+                                    <div>Сбербанк Лизинг</div>
+                                    <div>ВТБ Лизинг</div>
+                                    <div>Аэрофлот</div>
+                                    <div>Норникель</div>
+                                    <div>Лукойл</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Кнопки навигации -->
+                    <div class="gallery-nav prev" onclick="prevSlide()">←</div>
+                    <div class="gallery-nav next" onclick="nextSlide()">→</div>
+
+                    <!-- Индикаторы -->
+                    <div class="gallery-indicators" id="indicators">
+                        <div class="indicator active" onclick="goToSlide(0)"></div>
+                        <div class="indicator" onclick="goToSlide(1)"></div>
+                        <div class="indicator" onclick="goToSlide(2)"></div>
+                        <div class="indicator" onclick="goToSlide(3)"></div>
+                    </div>
+                </div>
+
+                <!-- Статистика компании -->
+                <div class="company-stats">
+                    <div class="stat-card">
+                        <div class="number">500+</div>
+                        <div class="label">Проданных вертолетов</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">50+</div>
+                        <div class="label">Сотрудников</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">20</div>
+                        <div class="label">Стран присутствия</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">98%</div>
+                        <div class="label">Довольных клиентов</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                    <a onclick="navigateTo('models')">3D Модели</a>
+                </div>
+                <div class="footer-contact">
+                    <p>info@skywag.ru</p>
+                    <p>Политика конфиденциальности</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 4;
+        const track = document.getElementById('galleryTrack');
+        const indicators = document.querySelectorAll('.indicator');
+        
+        function updateGallery() {
+            track.style.transform = `translateX(-${currentSlide * 25}%)`;
+            
+            indicators.forEach((ind, index) => {
+                if (index === currentSlide) {
+                    ind.classList.add('active');
+                } else {
+                    ind.classList.remove('active');
+                }
+            });
+        }
+        
+        window.nextSlide = function() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateGallery();
+        };
+        
+        window.prevSlide = function() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateGallery();
+        };
+        
+        window.goToSlide = function(index) {
+            currentSlide = index;
+            updateGallery();
+        };
+        
+        // Автоматическая прокрутка каждые 10 секунд
+        setInterval(() => {
+            nextSlide();
+        }, 10000);
+    </script>
+</body>
+</html>
