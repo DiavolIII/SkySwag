@@ -1,8 +1,3 @@
-// ============================================
-// SKYSWAG - ГЛАВНЫЙ ФАЙЛ (ПОЛНОЕ ОБНОВЛЕНИЕ)
-// ============================================
-
-// Навигация с анимацией (1 секунда)
 window.navigateTo = (page) => {
     const transition = document.getElementById('pageTransition');
     if (transition) {
