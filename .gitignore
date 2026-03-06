@@ -1,4 +1,3 @@
-# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -11,28 +10,23 @@ env.bak/
 venv.bak/
 pythonenv*
 
-# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# Database
 *.db
 *.sqlite
 *.sqlite3
 
-# Logs
 *.log
 *.log.*
 
-# OS
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Project specific
 backend/__pycache__/
 frontend/assets/models/temp/
 *.tmp
