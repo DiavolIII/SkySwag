@@ -1,0 +1,86 @@
+{
+  "products": [
+    {
+      "id": "h130-basic",
+      "name": "Airbus H130",
+      "model": "H130",
+      "type": "helicopter",
+      "version": "Basic",
+      "price": 6100000,
+      "description": "Легкий многоцелевой вертолет, идеально подходит для VIP-перевозок",
+      "image": "/assets/images/h130.jpg",
+      "inStock": true,
+      "year": 2025,
+      "hours": 0,
+      "features": ["VIP салон", "Кондиционер", "Шумоизоляция"]
+    },
+    {
+      "id": "h130-middle",
+      "name": "Airbus H130",
+      "model": "H130",
+      "type": "helicopter",
+      "version": "Middle",
+      "price": 6230000,
+      "description": "Улучшенная комплектация с расширенными возможностями",
+      "image": "/assets/images/h130-2.jpg",
+      "inStock": true,
+      "year": 2025,
+      "hours": 0,
+      "features": ["VIP салон", "Климат-контроль", "Авионика Garmin"]
+    },
+    {
+      "id": "h125",
+      "name": "Airbus H125",
+      "model": "H125",
+      "type": "helicopter",
+      "version": "Standard",
+      "price": 4550000,
+      "description": "Мощный и надежный вертолет для любых задач",
+      "image": "/assets/images/h125.jpg",
+      "inStock": true,
+      "year": 2024,
+      "hours": 0,
+      "features": ["Многоцелевой", "Высокая грузоподъемность"]
+    },
+    {
+      "id": "robinson-r66",
+      "name": "Robinson R66",
+      "model": "R66",
+      "type": "helicopter",
+      "version": "Turbine",
+      "price": 1600000,
+      "description": "Турбинный вертолет экономичного класса",
+      "image": "/assets/images/r66.jpg",
+      "inStock": true,
+      "year": 2025,
+      "hours": 0,
+      "features": ["Турбинный двигатель", "Экономичность"]
+    },
+    {
+      "id": "airbus-h125-msrp",
+      "name": "Airbus H125",
+      "model": "H125",
+      "type": "helicopter",
+      "version": "MSRP",
+      "price": 4500000,
+      "description": "Базовая комплектация по цене производителя",
+      "image": "/assets/images/h125-msrp.jpg",
+      "inStock": true,
+      "year": 2025,
+      "hours": 0
+    },
+    {
+      "id": "airbus-h125-premium",
+      "name": "Airbus H125",
+      "model": "H125",
+      "type": "helicopter",
+      "version": "Premium",
+      "price": 5900000,
+      "description": "Премиальная комплектация с улучшенным салоном",
+      "image": "/assets/images/h125-premium.jpg",
+      "inStock": true,
+      "year": 2025,
+      "hours": 0
+    }
+  ]
+}

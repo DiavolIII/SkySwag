@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - 3D Модели</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Стили для 3D просмотра */
+        .models-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .model-stats {
+            background: #141414;
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            padding: 0.5rem 1.5rem;
+            color: #d4af37;
+            font-size: 0.9rem;
+        }
+        
+        .models-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .model-viewer {
+            background: #141414;
+            border: 2px solid #d4af37;
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .model-viewer:hover {
+            border-color: #e31b23;
+            box-shadow: 0 0 30px rgba(227, 27, 35, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .model-header {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            background: rgba(0,0,0,0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            border-left: 3px solid #e31b23;
+            backdrop-filter: blur(5px);
+        }
+        
+        .model-name {
+            color: #d4af37;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .model-size {
+            color: #888;
+            font-size: 0.8rem;
+            background: #1a1a1a;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+        }
+        
+        .model-canvas {
+            width: 100%;
+            flex: 1;
+            min-height: 350px;
+            display: block;
+            background: #0a0a0a;
+        }
+        
+        .model-controls {
+            padding: 1rem;
+            background: #1a1a1a;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            border-top: 1px solid #d4af37;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: transparent;
+            border: 1px solid #d4af37;
+            color: #fff;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .control-btn:hover {
+            background: #d4af37;
+            color: #000;
+        }
+        
+        .fullscreen-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #d4af37;
+            color: #000;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 20;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fullscreen-btn:hover {
+            background: #e31b23;
+            color: #fff;
+            transform: scale(1.1) rotate(180deg);
+        }
+        
+        .model-badge {
+            display: inline-block;
+            background: #e31b23;
+            color: #fff;
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 1rem;
+        }
+        
+        .model-info {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #141414;
+            border-radius: 16px;
+            border: 1px solid #d4af37;
+        }
+        
+        .model-filename {
+            font-family: monospace;
+            color: #888;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #0a0a0a;
+            border-radius: 8px;
+        }
+        
+        .loading-spinner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #d4af37;
+            font-size: 1.2rem;
+        }
+        
+        .error-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #e31b23;
+            font-size: 1rem;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .models-gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .model-viewer {
+                height: 450px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">
+            SkySwag
+            <small>sky is the limit</small>
+        </div>
+    </div>
+
+    <div class="app">
+       <header class="hotbar">
+    <div class="logo-area" onclick="navigateTo('index')">
+        SkySwag
+        <small>sky is the limit</small>
+    </div>
+    <nav class="nav-links">
+        <span class="nav-item" onclick="navigateTo('catalog')">Каталог</span>
+        <span class="nav-item" onclick="navigateTo('services')">Услуги</span>
+        <span class="nav-item" onclick="navigateTo('about')">О компании</span>
+        <span class="nav-item" onclick="navigateTo('news')">Новости</span>
+        <span class="nav-item" onclick="navigateTo('leasing')">Лизинг / Кредитование</span>
+        <span class="nav-item" onclick="navigateTo('configurator')">Конфигуратор</span>
+    </nav>
+    <button class="action-btn" onclick="showOfferForm()">📞 Получить предложение</button>
+    <div id="authContainer" style="margin-left: auto;"></div>
+</header>
+
+        <main class="main-content">
+            <div id="breadcrumbs" class="breadcrumbs"></div>
+            <div class="models-header">
+                <h1 class="page-title">3D Модели вертолетов <span class="model-badge">GLB</span></h1>
+                <div class="model-stats">5 моделей • 191 МБ</div>
+            </div>
+            
+            <div class="models-gallery">
+                <!-- Модель 1: Airbus H145 -->
+                <div class="model-viewer" id="viewer1">
+                    <div class="model-header">
+                        <span class="model-name">🚁 Airbus H145</span>
+                        <span class="model-size">27 МБ</span>
+                    </div>
+                    <button class="fullscreen-btn" onclick="toggleFullscreen('canvas1')">⛶</button>
+                    <div id="canvas1" class="model-canvas">
+                        <div class="loading-spinner">⏳ Загрузка модели...</div>
+                    </div>
+                    <div class="model-controls">
+                        <button class="control-btn" onclick="rotateModel('canvas1')">🔄 Вращать</button>
+                        <button class="control-btn" onclick="resetModel('canvas1')">⟲ Сброс</button>
+                    </div>
+                    <div class="model-filename">38fdfead6bf44d4492524375dbc64ddb.glb</div>
+                </div>
+
+                <!-- Модель 2: Eurocopter EC145 -->
+                <div class="model-viewer" id="viewer2">
+                    <div class="model-header">
+                        <span class="model-name">🚁 Eurocopter EC145</span>
+                        <span class="model-size">36 МБ</span>
+                    </div>
+                    <button class="fullscreen-btn" onclick="toggleFullscreen('canvas2')">⛶</button>
+                    <div id="canvas2" class="model-canvas">
+                        <div class="loading-spinner">⏳ Загрузка модели...</div>
+                    </div>
+                    <div class="model-controls">
+                        <button class="control-btn" onclick="rotateModel('canvas2')">🔄 Вращать</button>
+                        <button class="control-btn" onclick="resetModel('canvas2')">⟲ Сброс</button>
+                    </div>
+                    <div class="model-filename">eurocopter_ecreuil_ec145.glb</div>
+                </div>
+
+                <!-- Модель 3: Airbus H130 -->
+                <div class="model-viewer" id="viewer3">
+                    <div class="model-header">
+                        <span class="model-name">🚁 Airbus H130</span>
+                        <span class="model-size">26 МБ</span>
+                    </div>
+                    <button class="fullscreen-btn" onclick="toggleFullscreen('canvas3')">⛶</button>
+                    <div id="canvas3" class="model-canvas">
+                        <div class="loading-spinner">⏳ Загрузка модели...</div>
+                    </div>
+                    <div class="model-controls">
+                        <button class="control-btn" onclick="rotateModel('canvas3')">🔄 Вращать</button>
+                        <button class="control-btn" onclick="resetModel('canvas3')">⟲ Сброс</button>
+                    </div>
+                    <div class="model-filename">helicopter.glb</div>
+                </div>
+
+                <!-- Модель 4: Merlin MK2 -->
+                <div class="model-viewer" id="viewer4">
+                    <div class="model-header">
+                        <span class="model-name">🚁 Merlin MK2</span>
+                        <span class="model-size">42 МБ</span>
+                    </div>
+                    <button class="fullscreen-btn" onclick="toggleFullscreen('canvas4')">⛶</button>
+                    <div id="canvas4" class="model-canvas">
+                        <div class="loading-spinner">⏳ Загрузка модели...</div>
+                    </div>
+                    <div class="model-controls">
+                        <button class="control-btn" onclick="rotateModel('canvas4')">🔄 Вращать</button>
+                        <button class="control-btn" onclick="resetModel('canvas4')">⟲ Сброс</button>
+                    </div>
+                    <div class="model-filename">merlin_mk2_helicopter.glb</div>
+                </div>
+
+                <!-- Модель 5: Stealth Wolf -->
+                <div class="model-viewer" id="viewer5">
+                    <div class="model-header">
+                        <span class="model-name">🚁 Stealth Wolf</span>
+                        <span class="model-size">59 МБ</span>
+                    </div>
+                    <button class="fullscreen-btn" onclick="toggleFullscreen('canvas5')">⛶</button>
+                    <div id="canvas5" class="model-canvas">
+                        <div class="loading-spinner">⏳ Загрузка модели...</div>
+                    </div>
+                    <div class="model-controls">
+                        <button class="control-btn" onclick="rotateModel('canvas5')">🔄 Вращать</button>
+                        <button class="control-btn" onclick="resetModel('canvas5')">⟲ Сброс</button>
+                    </div>
+                    <div class="model-filename">stealth_helicopter_-_wolf_.new_order.glb</div>
+                </div>
+            </div>
+
+            <div class="model-info">
+                <p style="color: #d4af37; font-size: 1.2rem;">✧ 5 премиальных 3D моделей в формате GLB ✧</p>
+                <p style="color: #888;">Используйте мышь для вращения • Колесико для приближения • Кнопки для управления</p>
+                <p style="color: #e31b23; margin-top: 1rem;">⚠️ Если модели не загружаются, проверьте пути к файлам в папке assets/models/</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                    <a onclick="navigateTo('models')">3D Модели</a>
+                </div>
+                <div class="footer-contact">
+                    <p>info@skywag.ru</p>
+                    <p>Политика конфиденциальности</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="js/analytics.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script>
+        // Упрощенная версия без Three.js для тестирования
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('pageTransition')?.classList.remove('active');
+            }, 1000);
+            
+            // Показываем заглушки для моделей
+            const canvases = ['canvas1', 'canvas2', 'canvas3', 'canvas4', 'canvas5'];
+            const modelNames = ['Airbus H145', 'Eurocopter EC145', 'Airbus H130', 'Merlin MK2', 'Stealth Wolf'];
+            
+            canvases.forEach((canvasId, index) => {
+                const canvas = document.getElementById(canvasId);
+                if (canvas) {
+                    // Очищаем загрузку
+                    canvas.innerHTML = '';
+                    
+                    // Создаем 3D заглушку
+                    createPlaceholder3D(canvas, modelNames[index]);
+                }
+            });
+        });
+
+        // Функция для создания 3D заглушки
+        function createPlaceholder3D(container, modelName) {
+            // Простая 3D заглушка с CSS
+            container.style.position = 'relative';
+            container.style.background = 'linear-gradient(135deg, #1a1a1a, #0a0a0a)';
+            container.style.overflow = 'hidden';
+            
+            // Добавляем вращающийся куб (имитация 3D)
+            const cube = document.createElement('div');
+            cube.style.width = '100px';
+            cube.style.height = '100px';
+            cube.style.position = 'absolute';
+            cube.style.top = '50%';
+            cube.style.left = '50%';
+            cube.style.transform = 'translate(-50%, -50%)';
+            cube.style.transformStyle = 'preserve-3d';
+            cube.style.animation = 'rotate3d 5s infinite linear';
+            
+            // Создаем грани куба
+            const colors = ['#d4af37', '#e31b23', '#333', '#d4af37', '#e31b23', '#333'];
+            const positions = [
+                'translateZ(50px)', 'translateZ(-50px)',
+                'rotateY(90deg) translateZ(50px)', 'rotateY(90deg) translateZ(-50px)',
+                'rotateX(90deg) translateZ(50px)', 'rotateX(90deg) translateZ(-50px)'
+            ];
+            
+            for (let i = 0; i < 6; i++) {
+                const face = document.createElement('div');
+                face.style.position = 'absolute';
+                face.style.width = '100px';
+                face.style.height = '100px';
+                face.style.background = colors[i];
+                face.style.opacity = '0.8';
+                face.style.border = '2px solid #d4af37';
+                face.style.transform = positions[i];
+                cube.appendChild(face);
+            }
+            
+            container.appendChild(cube);
+            
+            // Добавляем название модели
+            const label = document.createElement('div');
+            label.style.position = 'absolute';
+            label.style.bottom = '20px';
+            label.style.left = '0';
+            label.style.right = '0';
+            label.style.textAlign = 'center';
+            label.style.color = '#d4af37';
+            label.style.fontWeight = 'bold';
+            label.style.textShadow = '0 0 10px rgba(0,0,0,0.5)';
+            label.innerText = modelName;
+            container.appendChild(label);
+            
+            // Добавляем стили для анимации
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes rotate3d {
+                    0% { transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg); }
+                    100% { transform: translate(-50%, -50%) rotateX(360deg) rotateY(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Функции управления
+        window.rotateModel = (canvasId) => {
+            const canvas = document.getElementById(canvasId);
+            const cube = canvas.querySelector('div[style*="rotate3d"]');
+            if (cube) {
+                if (cube.style.animationPlayState === 'paused') {
+                    cube.style.animationPlayState = 'running';
+                } else {
+                    cube.style.animationPlayState = 'paused';
+                }
+            }
+        };
+
+        window.resetModel = (canvasId) => {
+            const canvas = document.getElementById(canvasId);
+            const cube = canvas.querySelector('div[style*="rotate3d"]');
+            if (cube) {
+                cube.style.transform = 'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
+                cube.style.animation = 'rotate3d 5s infinite linear';
+            }
+        };
+
+        window.toggleFullscreen = (canvasId) => {
+            const canvas = document.getElementById(canvasId);
+            if (canvas.requestFullscreen) {
+                canvas.requestFullscreen();
+            }
+        };
+    </script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

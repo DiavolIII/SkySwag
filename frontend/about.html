@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - О компании</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .about-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero секция */
+        .about-hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            border-radius: 40px;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .about-hero::before {
+            content: '🚁';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.03;
+            bottom: -5rem;
+            right: -5rem;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .about-hero h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #d4af37, #e31b23);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .about-hero p {
+            color: #aaa;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Круговая галерея */
+        .gallery-section {
+            margin: 4rem 0;
+            position: relative;
+            animation: fadeInUp 0.6s ease 0.1s both;
+        }
+
+        .gallery-title {
+            text-align: center;
+            color: #d4af37;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            padding: 2rem;
+            border: 1px solid #d4af37;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 2rem;
+        }
+
+        .carousel-slide {
+            flex: 0 0 calc(33.333% - 1.33rem);
+            min-width: 0;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .carousel-slide:hover {
+            transform: scale(1.02);
+        }
+
+        .slide-image {
+            width: 100%;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            transition: transform 0.5s;
+        }
+
+        .carousel-slide:hover .slide-image {
+            transform: scale(1.05);
+        }
+
+        .slide-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 1.5rem;
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .carousel-slide:hover .slide-overlay {
+            transform: translateY(0);
+        }
+
+        .slide-overlay h3 {
+            color: #d4af37;
+            margin-bottom: 0.3rem;
+        }
+
+        .slide-overlay p {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        /* Навигация карусели */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(212, 175, 55, 0.8);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #000;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: #e31b23;
+            color: #fff;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-btn.prev {
+            left: 20px;
+        }
+
+        .carousel-btn.next {
+            right: 20px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: #d4af37;
+            width: 25px;
+            border-radius: 10px;
+        }
+
+        .dot:hover {
+            background: #e31b23;
+        }
+
+        /* Карточки преимуществ */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .about-card {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 1px solid #d4af37;
+            border-radius: 24px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            animation: fadeInUp 0.5s ease;
+            animation-fill-mode: both;
+        }
+
+        .about-card:nth-child(1) { animation-delay: 0.2s; }
+        .about-card:nth-child(2) { animation-delay: 0.3s; }
+        .about-card:nth-child(3) { animation-delay: 0.4s; }
+        .about-card:nth-child(4) { animation-delay: 0.5s; }
+
+        .about-card:hover {
+            transform: translateY(-10px);
+            border-color: #e31b23;
+            box-shadow: 0 20px 40px rgba(227, 27, 35, 0.2);
+        }
+
+        .about-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .about-card h3 {
+            color: #d4af37;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-card p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        /* Статистика */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            animation: fadeInUp 0.6s ease 0.6s both;
+        }
+
+        .stat-item {
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #d4af37;
+            animation: pulse 2s infinite;
+        }
+
+        .stat-label {
+            color: #888;
+            margin-top: 0.5rem;
+        }
+
+        /* Миссия и ценности */
+        .mission-section {
+            margin: 4rem 0;
+            padding: 3rem;
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border-radius: 40px;
+            border: 1px solid #d4af37;
+            animation: fadeInUp 0.6s ease 0.7s both;
+        }
+
+        .mission-title {
+            text-align: center;
+            color: #d4af37;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .mission-text {
+            text-align: center;
+            color: #ccc;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .value-item {
+            text-align: center;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .value-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-item h4 {
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+        }
+
+        .value-item p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 992px) {
+            .carousel-slide {
+                flex: 0 0 calc(50% - 1rem);
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .about-container {
+                padding: 1rem;
+            }
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+            .carousel-slide {
+                flex: 0 0 100%;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            .carousel-btn.prev {
+                left: 10px;
+            }
+            .carousel-btn.next {
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">SkySwag<small>sky is the limit</small></div>
+    </div>
+
+    <div class="app">
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item" onclick="navigateTo('index')"><span class="nav-icon">🏠</span><span>Главная</span></span>
+                <span class="nav-item" onclick="navigateTo('catalog')"><span class="nav-icon">🚁</span><span>Каталог</span></span>
+                <span class="nav-item" onclick="navigateTo('services')"><span class="nav-icon">⚙️</span><span>Услуги</span></span>
+                <span class="nav-item active" onclick="navigateTo('about')"><span class="nav-icon">ℹ️</span><span>О компании</span></span>
+                <span class="nav-item" onclick="navigateTo('news')"><span class="nav-icon">📰</span><span>Новости</span></span>
+                <span class="nav-item" onclick="navigateTo('leasing')"><span class="nav-icon">💰</span><span>Лизинг</span></span>
+                <span class="nav-item" onclick="navigateTo('configurator')"><span class="nav-icon">🛠️</span><span>Конфигуратор</span></span>
+                <span class="nav-item" onclick="navigateTo('profile')"><span class="nav-icon">👤</span><span>Профиль</span></span>
+            </nav>
+            <button class="action-btn" onclick="showOfferForm()">📞 Получить предложение</button>
+            <div id="authContainer"></div>
+        </header>
+
+        <main class="main-content">
+            <div id="breadcrumbs" class="breadcrumbs"></div>
+            <div class="about-container">
+                <div class="about-hero">
+                    <h1>О компании SkySwag</h1>
+                    <p>Ваш надежный партнер в мире авиации с 2015 года</p>
+                </div>
+
+                <!-- Круговая галерея вертолетов -->
+                <div class="gallery-section">
+                    <h2 class="gallery-title">🚁 Наш флот</h2>
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="carouselTrack">
+                            <div class="carousel-slide">
+                                <div class="slide-image" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 500\'%3E%3Crect width=\'800\' height=\'500\' fill=\'%231a1a1a\'/%3E%3Ctext x=\'400\' y=\'250\' text-anchor=\'middle\' fill=\'%23d4af37\' font-size=\'80\'%3E🚁%3C/text%3E%3Ctext x=\'400\' y=\'350\' text-anchor=\'middle\' fill=\'%23888\' font-size=\'20\'%3EAirbus H130%3C/text%3E%3C/svg%3E')">
+                                    <div class="slide-overlay">
+                                        <h3>Airbus H130</h3>
+                                        <p>VIP вертолет премиум-класса</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="slide-image" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 500\'%3E%3Crect width=\'800\' height=\'500\' fill=\'%231a1a1a\'/%3E%3Ctext x=\'400\' y=\'250\' text-anchor=\'middle\' fill=\'%23d4af37\' font-size=\'80\'%3E🚁%3C/text%3E%3Ctext x=\'400\' y=\'350\' text-anchor=\'middle\' fill=\'%23888\' font-size=\'20\'%3EAirbus H125%3C/text%3E%3C/svg%3E')">
+                                    <div class="slide-overlay">
+                                        <h3>Airbus H125</h3>
+                                        <p>Многоцелевой вертолет</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="slide-image" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 500\'%3E%3Crect width=\'800\' height=\'500\' fill=\'%231a1a1a\'/%3E%3Ctext x=\'400\' y=\'250\' text-anchor=\'middle\' fill=\'%23d4af37\' font-size=\'80\'%3E🚁%3C/text%3E%3Ctext x=\'400\' y=\'350\' text-anchor=\'middle\' fill=\'%23888\' font-size=\'20\'%3EAirbus H145%3C/text%3E%3C/svg%3E')">
+                                    <div class="slide-overlay">
+                                        <h3>Airbus H145</h3>
+                                        <p>Премиальный вертолет</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="slide-image" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 500\'%3E%3Crect width=\'800\' height=\'500\' fill=\'%231a1a1a\'/%3E%3Ctext x=\'400\' y=\'250\' text-anchor=\'middle\' fill=\'%23d4af37\' font-size=\'80\'%3E🚁%3C/text%3E%3Ctext x=\'400\' y=\'350\' text-anchor=\'middle\' fill=\'%23888\' font-size=\'20\'%3ERobinson R66%3C/text%3E%3C/svg%3E')">
+                                    <div class="slide-overlay">
+                                        <h3>Robinson R66</h3>
+                                        <p>Турбинный экономичный</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="slide-image" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 500\'%3E%3Crect width=\'800\' height=\'500\' fill=\'%231a1a1a\'/%3E%3Ctext x=\'400\' y=\'250\' text-anchor=\'middle\' fill=\'%23d4af37\' font-size=\'80\'%3E🚁%3C/text%3E%3Ctext x=\'400\' y=\'350\' text-anchor=\'middle\' fill=\'%23888\' font-size=\'20\'%3EEurocopter EC145%3C/text%3E%3C/svg%3E')">
+                                    <div class="slide-overlay">
+                                        <h3>Eurocopter EC145</h3>
+                                        <p>Многоцелевой вертолет</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="slide-image" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 500\'%3E%3Crect width=\'800\' height=\'500\' fill=\'%231a1a1a\'/%3E%3Ctext x=\'400\' y=\'250\' text-anchor=\'middle\' fill=\'%23d4af37\' font-size=\'80\'%3E🚁%3C/text%3E%3Ctext x=\'400\' y=\'350\' text-anchor=\'middle\' fill=\'%23888\' font-size=\'20\'%3EMerlin MK2%3C/text%3E%3C/svg%3E')">
+                                    <div class="slide-overlay">
+                                        <h3>Merlin MK2</h3>
+                                        <p>Военно-транспортный</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="slide-image" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 500\'%3E%3Crect width=\'800\' height=\'500\' fill=\'%231a1a1a\'/%3E%3Ctext x=\'400\' y=\'250\' text-anchor=\'middle\' fill=\'%23d4af37\' font-size=\'80\'%3E🚁%3C/text%3E%3Ctext x=\'400\' y=\'350\' text-anchor=\'middle\' fill=\'%23888\' font-size=\'20\'%3EStealth Wolf%3C/text%3E%3C/svg%3E')">
+                                    <div class="slide-overlay">
+                                        <h3>Stealth Wolf</h3>
+                                        <p>Стелс-технологии</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-btn prev" onclick="prevSlide()">←</button>
+                        <button class="carousel-btn next" onclick="nextSlide()">→</button>
+                    </div>
+                    <div class="carousel-dots" id="carouselDots"></div>
+                </div>
+
+                <!-- Преимущества -->
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="about-icon">🚁</div>
+                        <h3>10+ лет опыта</h3>
+                        <p>Более 10 лет успешной работы на рынке вертолетной индустрии</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-icon">🌍</div>
+                        <h3>20+ стран</h3>
+                        <p>Поставки вертолетов в более чем 20 стран мира</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-icon">👥</div>
+                        <h3>50+ сотрудников</h3>
+                        <p>Профессиональная команда сертифицированных специалистов</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-icon">⭐</div>
+                        <h3>98% довольных клиентов</h3>
+                        <p>Высокий уровень сервиса и качества обслуживания</p>
+                    </div>
+                </div>
+
+                <!-- Статистика -->
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Проданных вертолетов</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Сотрудников</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">20</div>
+                        <div class="stat-label">Стран присутствия</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Довольных клиентов</div>
+                    </div>
+                </div>
+
+                <!-- Миссия и ценности -->
+                <div class="mission-section">
+                    <h2 class="mission-title">🎯 Наша миссия</h2>
+                    <div class="mission-text">
+                        <p>Предоставлять клиентам лучшие решения в мире авиации, сочетая передовые технологии, 
+                        безупречный сервис и индивидуальный подход к каждому клиенту. Мы стремимся сделать 
+                        владение вертолетом доступным и комфортным.</p>
+                    </div>
+                    <div class="values-grid">
+                        <div class="value-item">
+                            <div class="value-icon">🔧</div>
+                            <h4>Качество</h4>
+                            <p>Только сертифицированная техника от ведущих производителей</p>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-icon">🤝</div>
+                            <h4>Доверие</h4>
+                            <p>Честность и прозрачность в каждом взаимодействии</p>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-icon">⚡</div>
+                            <h4>Инновации</h4>
+                            <p>Внедрение передовых технологий и решений</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                </div>
+                <div class="footer-contact">
+                    <p>info@skywag.ru</p>
+                    <p>+7 (495) 123-45-67</p>
+                    <p>© 2024 SkySwag. Все права защищены</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="js/analytics.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script>
+        let currentIndex = 0;
+        let autoPlayInterval;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const track = document.getElementById('carouselTrack');
+        const dotsContainer = document.getElementById('carouselDots');
+        let slidesPerView = 3;
+
+        function updateSlidesPerView() {
+            if (window.innerWidth <= 768) {
+                slidesPerView = 1;
+            } else if (window.innerWidth <= 992) {
+                slidesPerView = 2;
+            } else {
+                slidesPerView = 3;
+            }
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            const slideWidth = slides[0].offsetWidth + 32; // ширина + gap
+            const offset = currentIndex * slideWidth;
+            track.style.transform = `translateX(-${offset}px)`;
+            
+            // Обновляем точки
+            const totalDots = Math.ceil(slides.length / slidesPerView);
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === Math.floor(currentIndex / slidesPerView));
+            });
+        }
+
+        function createDots() {
+            const totalDots = Math.ceil(slides.length / slidesPerView);
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < totalDots; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (i === 0) dot.classList.add('active');
+                dot.onclick = () => goToSlide(i);
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function goToSlide(dotIndex) {
+            currentIndex = dotIndex * slidesPerView;
+            if (currentIndex > slides.length - slidesPerView) {
+                currentIndex = slides.length - slidesPerView;
+            }
+            if (currentIndex < 0) currentIndex = 0;
+            updateCarousel();
+        }
+
+        function nextSlide() {
+            currentIndex += slidesPerView;
+            if (currentIndex >= slides.length) {
+                currentIndex = 0;
+            }
+            updateCarousel();
+            resetAutoPlay();
+        }
+
+        function prevSlide() {
+            currentIndex -= slidesPerView;
+            if (currentIndex < 0) {
+                currentIndex = slides.length - slidesPerView;
+            }
+            updateCarousel();
+            resetAutoPlay();
+        }
+
+        function resetAutoPlay() {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = setInterval(() => {
+                nextSlide();
+            }, 10000);
+        }
+
+        // Инициализация
+        function initCarousel() {
+            updateSlidesPerView();
+            createDots();
+            resetAutoPlay();
+            
+            window.addEventListener('resize', () => {
+                updateSlidesPerView();
+                createDots();
+                updateCarousel();
+            });
+        }
+
+        // Анимация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const transition = document.getElementById('pageTransition');
+                if (transition) transition.classList.remove('active');
+            }, 1000);
+            initCarousel();
+        });
+    </script>
+</body>
+</html>

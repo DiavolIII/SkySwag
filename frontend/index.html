@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - Премиальные вертолеты с 3D визуализацией</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Дополнительные стили для главной страницы */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 40px rgba(212, 175, 55, 0.6), 0 0 60px rgba(227, 27, 35, 0.4);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes rotateSlow {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border-radius: 40px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-section::before {
+            content: '🚁';
+            position: absolute;
+            font-size: 25rem;
+            opacity: 0.03;
+            bottom: -8rem;
+            right: -8rem;
+            animation: float 20s infinite ease-in-out, rotateSlow 60s infinite linear;
+            pointer-events: none;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #d4af37, #e31b23, #d4af37);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 4s linear infinite, glowPulse 3s ease-in-out infinite;
+            letter-spacing: -0.02em;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-accent {
+            font-size: 1.8rem;
+            color: #d4af37;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .hero-btn {
+            font-size: 1.2rem;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, #d4af37, #e31b23);
+            border: none;
+            color: #000;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+            z-index: -1;
+        }
+
+        .hero-btn:hover::before {
+            left: 100%;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #d4af37, #e31b23, #d4af37, transparent);
+        }
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .product-card {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 24px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease;
+            animation-fill-mode: both;
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .product-card:hover::before {
+            left: 100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: #e31b23;
+            box-shadow: 0 20px 40px rgba(227, 27, 35, 0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-bottom: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .card-model {
+            color: #888;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+            color: #fff;
+        }
+
+        .card-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #d4af37;
+            margin: 1rem 0;
+        }
+
+        .card-year {
+            color: #888;
+            font-size: 0.9rem;
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+        }
+
+        .view-3d-btn {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: #d4af37;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .view-3d-btn:hover {
+            background: #e31b23;
+            color: #fff;
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .estimate-section {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 1px solid #d4af37;
+            border-radius: 40px;
+            padding: 3rem;
+            margin-top: 3rem;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .estimate-subtitle {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .estimate-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .estimate-form input {
+            padding: 1rem 1.2rem;
+            background: #1f1f1f;
+            border: 1px solid #d4af37;
+            border-radius: 15px;
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .estimate-form input:focus {
+            outline: none;
+            border-color: #e31b23;
+            box-shadow: 0 0 10px rgba(227, 27, 35, 0.3);
+        }
+
+        .submit-btn {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #d4af37, #e31b23);
+            color: #000;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .estimate-note {
+            text-align: center;
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        /* Хлебные крошки */
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            margin-bottom: 1.5rem;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .breadcrumbs a {
+            color: #d4af37;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumbs a:hover {
+            color: #e31b23;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            .hero-accent {
+                font-size: 1.2rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+                white-space: normal;
+            }
+            .estimate-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">SkySwag<small>sky is the limit</small></div>
+    </div>
+
+    <div class="app">
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item active" onclick="navigateTo('index')"><span class="nav-icon">🏠</span><span>Главная</span></span>
+                <span class="nav-item" onclick="navigateTo('catalog')"><span class="nav-icon">🚁</span><span>Каталог</span></span>
+                <span class="nav-item" onclick="navigateTo('services')"><span class="nav-icon">⚙️</span><span>Услуги</span></span>
+                <span class="nav-item" onclick="navigateTo('about')"><span class="nav-icon">ℹ️</span><span>О компании</span></span>
+                <span class="nav-item" onclick="navigateTo('news')"><span class="nav-icon">📰</span><span>Новости</span></span>
+                <span class="nav-item" onclick="navigateTo('leasing')"><span class="nav-icon">💰</span><span>Лизинг</span></span>
+                <span class="nav-item" onclick="navigateTo('configurator')"><span class="nav-icon">🛠️</span><span>Конфигуратор</span></span>
+                <span class="nav-item" onclick="navigateTo('profile')"><span class="nav-icon">👤</span><span>Профиль</span></span>
+            </nav>
+            <button class="action-btn" onclick="showOfferForm()">📞 Получить предложение</button>
+            <div id="authContainer"></div>
+        </header>
+
+        <main class="main-content">
+            <div id="breadcrumbs" class="breadcrumbs"></div>
+
+            <section class="hero-section">
+                <h1 class="hero-title">Ваш личный вертолет</h1>
+                <p class="hero-subtitle">Закажите у надежного поставщика SkySwag — лидера рынка вертолетной индустрии</p>
+                <p class="hero-accent">Закрепите за собой условия акции до 30 июня</p>
+                <button class="action-btn hero-btn" onclick="navigateTo('catalog')">🚁 Смотреть модели →</button>
+            </section>
+
+            <section class="popular-section">
+                <h2 class="section-title">🔥 Популярные модели</h2>
+                <div class="catalog-grid" id="popularProducts">
+                    <div class="loading-state"><div class="spinner"></div><p>Загрузка вертолетов...</p></div>
+                </div>
+            </section>
+
+            <section class="estimate-section">
+                <h2 class="section-title">📋 Оценка вертолета</h2>
+                <p class="estimate-subtitle">Узнайте, сколько стоит Ваш вертолет — бесплатная экспертная оценка</p>
+                <form class="estimate-form" id="estimateForm">
+                    <input type="text" placeholder="Модель вертолета" name="model" required>
+                    <input type="number" placeholder="Год выпуска" name="year" required>
+                    <input type="number" placeholder="Налет, часов" name="hours" required>
+                    <input type="tel" placeholder="Номер телефона" name="phone" required>
+                    <input type="text" placeholder="Ваше имя" name="name" required>
+                    <button type="submit" class="action-btn submit-btn">📩 Отправить на оценку</button>
+                </form>
+                <p class="estimate-note">* Мы оцениваем вертолет, анализируя актуальные предложения на рынке. Ответ в течение 24 часов.</p>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                </div>
+                <div class="footer-contact">
+                    <p>📧 info@skywag.ru</p>
+                    <p>📞 +7 (495) 123-45-67</p>
+                    <p>© 2024 SkySwag. Все права защищены</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script>
+        // Инициализация хлебных крошек
+        createBreadcrumbs([
+            { name: 'Главная', url: 'index.html' }
+        ]);
+
+        // Инициализация трекинга страницы
+        initPageTracking('Главная', ['Главная']);
+
+        // Загрузка популярных товаров
+        async function loadPopularProducts() {
+            const grid = document.getElementById('popularProducts');
+            if (!grid) return;
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/products');
+                const data = await response.json();
+                const products = (data.data || []).slice(0, 4);
+                
+                if (products.length === 0) {
+                    grid.innerHTML = '<div style="text-align:center; padding:2rem; color:#888;">🚁 Скоро здесь появятся новые модели</div>';
+                    return;
+                }
+                
+                grid.innerHTML = products.map(product => {
+                    const modelFile = getModelFile(product);
+                    return `
+                        <div class="product-card" onclick="navigateTo('catalog')">
+                            <div class="product-image" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 400 300\'%3E%3Crect width=\'400\' height=\'300\' fill=\'%23141414\'/%3E%3Ctext x=\'200\' y=\'150\' text-anchor=\'middle\' fill=\'%23d4af37\' font-size=\'64\'%3E🚁%3C/text%3E%3Ctext x=\'200\' y=\'220\' text-anchor=\'middle\' fill=\'%23888\' font-size=\'14\'%3E${product.model || product.name}%3C/text%3E%3C/svg%3E')"></div>
+                            <div class="card-model">${product.model || product.name.split(' ')[1] || 'HELICOPTER'}</div>
+                            <div class="card-title">${product.name} ${product.version || ''}</div>
+                            <div class="card-price">${product.price.toLocaleString()} €</div>
+                            <div class="card-year">${product.year || 2025} год выпуска</div>
+                            <button class="view-3d-btn" onclick="event.stopPropagation(); open3DViewer('${modelFile}', '${product.name} ${product.version || ''}')" title="3D просмотр">3D</button>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Ошибка загрузки:', error);
+                grid.innerHTML = '<div class="error-state">❌ Ошибка загрузки. Проверьте подключение к серверу</div>';
+            }
+        }
+
+        // Форма оценки
+        document.getElementById('estimateForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            if (!data.name || !data.phone) {
+                showNotification('Пожалуйста, заполните имя и телефон', 'error');
+                return;
+            }
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Отправка...';
+            submitBtn.disabled = true;
+            
+            try {
+                const token = localStorage.getItem('skywag_token') || localStorage.getItem('token');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+                
+                const response = await fetch('http://localhost:5000/api/estimates', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    showNotification('✅ Заявка отправлена! Наш специалист свяжется с вами.', 'success');
+                    e.target.reset();
+                } else {
+                    showNotification('❌ Ошибка отправки. Попробуйте позже.', 'error');
+                }
+            } catch (error) {
+                showNotification('❌ Ошибка подключения к серверу', 'error');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Запуск
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const transition = document.getElementById('pageTransition');
+                if (transition) transition.classList.remove('active');
+            }, 1000);
+            loadPopularProducts();
+        });
+    </script>
+</body>
+</html>

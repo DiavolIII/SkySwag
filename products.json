@@ -1,0 +1,101 @@
+{
+  "products": [
+    {
+      "id": "h130-basic",
+      "name": "Airbus H130",
+      "model": "H130",
+      "type": "helicopter",
+      "version": "Basic",
+      "price": 6100000,
+      "description": "Легкий многоцелевой вертолет, идеально подходит для VIP-перевозок",
+      "image": "/assets/images/h130.jpg",
+      "inStock": true,
+      "year": 2025,
+      "model_file": "helicopter.glb"
+    },
+    {
+      "id": "h130-middle",
+      "name": "Airbus H130",
+      "model": "H130",
+      "version": "Middle",
+      "price": 6230000,
+      "description": "Улучшенная комплектация с расширенными возможностями",
+      "image": "/assets/images/h130-2.jpg",
+      "inStock": true,
+      "year": 2025,
+      "model_file": "helicopter.glb"
+    },
+    {
+      "id": "h125",
+      "name": "Airbus H125",
+      "model": "H125",
+      "version": "Standard",
+      "price": 4550000,
+      "description": "Мощный и надежный вертолет для любых задач",
+      "image": "/assets/images/h125.jpg",
+      "inStock": true,
+      "year": 2024,
+      "model_file": "helicopter.glb"
+    },
+    {
+      "id": "r66",
+      "name": "Robinson R66",
+      "model": "R66",
+      "version": "Turbine",
+      "price": 1600000,
+      "description": "Турбинный вертолет экономичного класса",
+      "image": "/assets/images/r66.jpg",
+      "inStock": true,
+      "year": 2025,
+      "model_file": "helicopter.glb"
+    },
+    {
+      "id": "h145",
+      "name": "Airbus H145",
+      "model": "H145",
+      "version": "Premium",
+      "price": 8900000,
+      "description": "Премиальный вертолет для VIP перевозок",
+      "image": "/assets/images/h145.jpg",
+      "inStock": true,
+      "year": 2025,
+      "model_file": "38fdfead6bf44d4492524375dbc64ddb.glb"
+    },
+    {
+      "id": "ec145",
+      "name": "Eurocopter EC145",
+      "model": "EC145",
+      "version": "Standard",
+      "price": 7500000,
+      "description": "Многоцелевой вертолет для различных задач",
+      "image": "/assets/images/ec145.jpg",
+      "inStock": true,
+      "year": 2024,
+      "model_file": "eurocopter_ecreuil_ec145.glb"
+    },
+    {
+      "id": "merlin",
+      "name": "Merlin MK2",
+      "model": "Merlin",
+      "version": "Military",
+      "price": 12000000,
+      "description": "Военно-транспортный вертолет",
+      "image": "/assets/images/merlin.jpg",
+      "inStock": true,
+      "year": 2023,
+      "model_file": "merlin_mk2_helicopter.glb"
+    },
+    {
+      "id": "stealth",
+      "name": "Stealth Wolf",
+      "model": "Stealth",
+      "version": "Special",
+      "price": 25000000,
+      "description": "Стелс-вертолет специального назначения",
+      "image": "/assets/images/stealth.jpg",
+      "inStock": true,
+      "year": 2025,
+      "model_file": "stealth_helicopter_-_wolf_.new_order.glb"
+    }
+  ]
+}

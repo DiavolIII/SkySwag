@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - Личный кабинет</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .profile-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(212, 175, 55, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .profile-main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .user-card {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 2px solid #d4af37;
+            border-radius: 30px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: #e31b23;
+        }
+
+        .user-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #d4af37, #e31b23);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            animation: glowPulse 2s infinite;
+        }
+
+        .user-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .user-email {
+            color: #888;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .user-badge {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+            color: #d4af37;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .user-badge.vip {
+            background: rgba(227, 27, 35, 0.2);
+            color: #e31b23;
+        }
+
+        .user-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .wallet-card {
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border: 2px solid #d4af37;
+            border-radius: 30px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .wallet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .wallet-header h3 {
+            color: #d4af37;
+            font-size: 1.3rem;
+        }
+
+        .wallet-balance {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .wallet-balance:hover {
+            transform: scale(1.02);
+        }
+
+        .balance-amount {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        .balance-currency {
+            font-size: 1rem;
+            color: #888;
+        }
+
+        .bonus-amount {
+            font-size: 1.8rem;
+            color: #e31b23;
+            font-weight: bold;
+        }
+
+        .recharge-form {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .recharge-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            background: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 15px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .recharge-input:focus {
+            outline: none;
+            border-color: #e31b23;
+            box-shadow: 0 0 10px rgba(227, 27, 35, 0.3);
+            transform: scale(1.02);
+        }
+
+        .progress-section {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.5s ease 0.1s both;
+            transition: all 0.3s;
+        }
+
+        .progress-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            color: #888;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #2a2a2a;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d4af37, #e31b23);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .status-section {
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.5s ease 0.2s both;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .status-card {
+            background: #141414;
+            border: 2px solid #d4af37;
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .status-card:nth-child(1) { animation-delay: 0.1s; }
+        .status-card:nth-child(2) { animation-delay: 0.2s; }
+        .status-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .status-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .status-card:hover::before {
+            left: 100%;
+        }
+
+        .status-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .status-card.active {
+            border-color: #e31b23;
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            box-shadow: 0 0 30px rgba(227, 27, 35, 0.3);
+        }
+
+        .status-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .status-card:hover .status-icon {
+            transform: scale(1.1);
+        }
+
+        .status-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-bonus {
+            color: #d4af37;
+            font-size: 0.9rem;
+        }
+
+        .status-requirement {
+            color: #888;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .status-card.standard .status-name { color: #2c3e50; }
+        .status-card.premium .status-name { color: #d4af37; }
+        .status-card.vip .status-name { color: #e31b23; }
+
+        .transactions-section {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            animation: fadeInUp 0.5s ease 0.3s both;
+            transition: all 0.3s;
+        }
+
+        .transactions-section:hover {
+            transform: translateY(-3px);
+        }
+
+        .transactions-list {
+            max-height: 350px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+
+        .transactions-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .transactions-list::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 10px;
+        }
+
+        .transactions-list::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 10px;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #2a2a2a;
+            transition: all 0.3s;
+            animation: fadeInUp 0.2s ease;
+        }
+
+        .transaction-item:hover {
+            background: rgba(212, 175, 55, 0.05);
+            transform: translateX(5px);
+        }
+
+        .transaction-type.recharge { color: #2ecc71; }
+        .transaction-type.purchase { color: #e31b23; }
+        .transaction-type.bonus { color: #d4af37; }
+
+        .transaction-amount {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .transaction-amount.plus { color: #2ecc71; }
+        .transaction-amount.minus { color: #e31b23; }
+
+        .transaction-date {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .orders-section {
+            margin-top: 2rem;
+            animation: fadeInUp 0.5s ease 0.4s both;
+        }
+
+        .orders-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .order-card {
+            background: #141414;
+            border: 1px solid #d4af37;
+            border-radius: 15px;
+            padding: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            transition: all 0.3s;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .order-card:hover {
+            border-color: #e31b23;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .order-status {
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .order-status.pending { background: #f39c12; color: #000; }
+        .order-status.confirmed { background: #2ecc71; color: #000; }
+        .order-status.completed { background: #27ae60; color: #fff; }
+        .order-status.shipped { background: #3498db; color: #fff; }
+
+        .edit-form {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 1px solid #d4af37;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            animation: fadeInUp 0.5s ease 0.5s both;
+            transition: all 0.3s;
+        }
+
+        .edit-form:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .edit-form input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            margin: 0.5rem 0;
+            background: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 15px;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        .edit-form input:focus {
+            outline: none;
+            border-color: #e31b23;
+            box-shadow: 0 0 10px rgba(227, 27, 35, 0.3);
+            transform: scale(1.02);
+        }
+
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37, #e31b23);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #d4af37;
+            color: #d4af37;
+        }
+
+        .btn-secondary:hover {
+            background: #d4af37;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #d4af37;
+            border-top-color: #e31b23;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .auth-box {
+            max-width: 500px;
+            margin: 2rem auto;
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 2px solid #d4af37;
+            border-radius: 30px;
+            padding: 2.5rem;
+            animation: scaleIn 0.4s ease;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.8rem;
+            background: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .auth-tab:hover {
+            transform: translateY(-2px);
+        }
+
+        .auth-tab.active {
+            background: linear-gradient(135deg, #d4af37, #e31b23);
+            color: #000;
+            border-color: transparent;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            margin: 0.8rem 0;
+            background: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 15px;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        .auth-form input:focus {
+            outline: none;
+            border-color: #e31b23;
+            box-shadow: 0 0 10px rgba(227, 27, 35, 0.3);
+            transform: scale(1.02);
+        }
+
+        .profile-phone {
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .profile-phone:hover {
+            color: #d4af37;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 992px) {
+            .profile-main { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .profile-container { padding: 1rem; }
+            .status-grid { grid-template-columns: 1fr; }
+            .order-card { flex-direction: column; text-align: center; }
+            .recharge-form { flex-direction: column; }
+            .transaction-item { flex-direction: column; text-align: center; gap: 0.5rem; }
+            .user-name { font-size: 1.3rem; }
+            .balance-amount { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">SkySwag<small>sky is the limit</small></div>
+    </div>
+
+    <div class="app">
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item" onclick="navigateTo('index')"><span class="nav-icon">🏠</span><span>Главная</span></span>
+                <span class="nav-item" onclick="navigateTo('catalog')"><span class="nav-icon">🚁</span><span>Каталог</span></span>
+                <span class="nav-item" onclick="navigateTo('services')"><span class="nav-icon">⚙️</span><span>Услуги</span></span>
+                <span class="nav-item" onclick="navigateTo('about')"><span class="nav-icon">ℹ️</span><span>О компании</span></span>
+                <span class="nav-item" onclick="navigateTo('news')"><span class="nav-icon">📰</span><span>Новости</span></span>
+                <span class="nav-item" onclick="navigateTo('leasing')"><span class="nav-icon">💰</span><span>Лизинг</span></span>
+                <span class="nav-item" onclick="navigateTo('configurator')"><span class="nav-icon">🛠️</span><span>Конфигуратор</span></span>
+                <span class="nav-item active" onclick="navigateTo('profile')"><span class="nav-icon">👤</span><span>Профиль</span></span>
+            </nav>
+            <button class="action-btn" onclick="showOfferForm()">📞 Получить предложение</button>
+            <div id="authContainer"></div>
+        </header>
+
+        <main class="main-content">
+            <div id="profileContent" class="profile-container">
+                <div style="text-align: center; padding: 3rem;">
+                    <div class="spinner"></div>
+                    <p style="color: #888; margin-top: 1rem;">Загрузка профиля...</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                </div>
+                <div class="footer-contact">
+                    <p>info@skywag.ru</p>
+                    <p>+7 (495) 123-45-67</p>
+                    <p>© 2024 SkySwag. Все права защищены</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script>
+        const statuses = {
+            standard: { name: 'Standard', icon: '⭐', bonusRate: 0.01, requirement: 0, color: '#2c3e50', description: 'Базовый статус' },
+            premium: { name: 'Premium', icon: '✨', bonusRate: 0.03, requirement: 10000, color: '#d4af37', description: 'Повышенные бонусы' },
+            vip: { name: 'VIP', icon: '👑', bonusRate: 0.05, requirement: 50000, color: '#e31b23', description: 'Максимальные привилегии' }
+        };
+
+        let userWallet = { balance: 0, bonus: 0, transactions: [] };
+
+        function maskPhone(phone) {
+            if (!phone || phone === '—') return '—';
+            if (phone.length <= 6) return phone;
+            return phone.slice(0, 4) + '****' + phone.slice(-2);
+        }
+
+        window.togglePhoneInProfile = (element) => {
+            const phoneSpan = element.querySelector('.profile-phone');
+            if (!phoneSpan) return;
+            
+            if (phoneSpan.getAttribute('data-revealed') === 'true') {
+                phoneSpan.textContent = maskPhone(phoneSpan.getAttribute('data-full'));
+                phoneSpan.setAttribute('data-revealed', 'false');
+            } else {
+                phoneSpan.textContent = phoneSpan.getAttribute('data-full');
+                phoneSpan.setAttribute('data-revealed', 'true');
+                setTimeout(() => {
+                    if (phoneSpan.getAttribute('data-revealed') === 'true') {
+                        phoneSpan.textContent = maskPhone(phoneSpan.getAttribute('data-full'));
+                        phoneSpan.setAttribute('data-revealed', 'false');
+                    }
+                }, 3000);
+            }
+        };
+
+        async function loadProfile() {
+            const token = localStorage.getItem('skywag_token') || localStorage.getItem('token');
+            const profileContent = document.getElementById('profileContent');
+
+            if (!token) {
+                showAuthForm();
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/api/me', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+
+                if (response.status === 401) {
+                    localStorage.removeItem('skywag_token');
+                    localStorage.removeItem('token');
+                    showAuthForm();
+                    return;
+                }
+
+                const user = await response.json();
+                window.currentUser = user;
+                await loadWalletBalance();
+                await loadOrders();
+                renderProfile(user);
+            } catch (error) {
+                console.error('Ошибка загрузки профиля:', error);
+                profileContent.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; animation: fadeInUp 0.3s ease;">
+                        <h2 style="color: #e31b23;">❌ Ошибка загрузки</h2>
+                        <p style="color: #888;">Не удалось загрузить данные профиля</p>
+                        <button class="btn btn-primary" onclick="loadProfile()" style="margin-top: 1rem;">Повторить</button>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadWalletBalance() {
+            const token = localStorage.getItem('skywag_token') || localStorage.getItem('token');
+            if (!token) return;
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/wallet/balance', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    userWallet.balance = data.balance;
+                    userWallet.bonus = data.bonus;
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки баланса:', error);
+            }
+        }
+
+        window.rechargeWallet = async () => {
+            const amount = parseFloat(document.getElementById('rechargeAmount')?.value);
+            if (!amount || amount < 10) {
+                showNotification('Введите сумму пополнения (минимум 10 €)', 'error');
+                return;
+            }
+            
+            if (!confirm(`Пополнить баланс на ${amount.toLocaleString()} €?`)) return;
+            
+            const token = localStorage.getItem('skywag_token') || localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/wallet/recharge', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ amount: amount })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showNotification(`✅ Баланс пополнен на ${amount.toLocaleString()} €`, 'success');
+                    userWallet.balance = data.new_balance;
+                    
+                    // Обновляем отображение
+                    const balanceElement = document.querySelector('.balance-amount');
+                    if (balanceElement) {
+                        balanceElement.textContent = data.new_balance.toLocaleString() + ' €';
+                    }
+                    
+                    // Добавляем транзакцию в историю
+                    addTransaction('recharge', amount);
+                } else {
+                    showNotification(data.error || '❌ Ошибка пополнения', 'error');
+                }
+            } catch (error) {
+                showNotification('❌ Ошибка подключения к серверу', 'error');
+            }
+        };
+
+        function addTransaction(type, amount) {
+            const transactionsList = document.getElementById('transactionsList');
+            if (!transactionsList) return;
+            
+            const newTransaction = `
+                <div class="transaction-item">
+                    <div class="transaction-type ${type}">
+                        ${type === 'recharge' ? '💳 Пополнение' : type === 'purchase' ? '🛒 Покупка' : '🎁 Бонус'}
+                    </div>
+                    <div class="transaction-amount plus">
+                        +${amount.toLocaleString()} €
+                    </div>
+                    <div class="transaction-date">${new Date().toLocaleDateString()}</div>
+                </div>
+            `;
+            
+            // Добавляем в начало списка
+            if (transactionsList.innerHTML.includes('Нет операций')) {
+                transactionsList.innerHTML = newTransaction;
+            } else {
+                transactionsList.insertAdjacentHTML('afterbegin', newTransaction);
+            }
+        }
+
+        function renderProfile(user) {
+            const status = statuses[user.status] || statuses.standard;
+            const nextStatus = user.status === 'standard' ? statuses.premium : (user.status === 'premium' ? statuses.vip : null);
+            const progress = nextStatus ? (user.bonus_points / nextStatus.requirement) * 100 : 100;
+            const maskedPhoneValue = maskPhone(user.phone);
+
+            const html = `
+                <div class="profile-main">
+                    <div class="user-card">
+                        <div class="user-avatar">${status.icon}</div>
+                        <div class="user-name">${user.full_name || user.email.split('@')[0]}</div>
+                        <div class="user-email">${user.email}</div>
+                        <div>
+                            <span class="user-badge">${user.role === 'admin' ? '👑 Администратор' : '🔒 Клиент'}</span>
+                            <span class="user-badge vip">${status.icon} ${status.name}</span>
+                        </div>
+                        ${user.phone ? `
+                            <div style="margin-top: 0.8rem; color: #888; cursor: pointer;" onclick="togglePhoneInProfile(this)">
+                                📞 <span class="profile-phone" data-full="${user.phone}" data-revealed="false">${maskedPhoneValue}</span>
+                                <span style="font-size: 0.7rem; color: #d4af37;">(нажмите чтобы показать)</span>
+                            </div>
+                        ` : ''}
+                        <div style="margin-top: 0.5rem; color: #666; font-size: 0.8rem;">📅 Регистрация: ${new Date(user.created_at).toLocaleDateString()}</div>
+                        <div style="margin-top: 0.5rem; color: #666; font-size: 0.8rem;">🆔 ID: ${user.id.slice(0, 8)}</div>
+                    </div>
+
+                    <div class="wallet-card">
+                        <div class="wallet-header">
+                            <h3>💰 Мой кошелек</h3>
+                            <span style="color: #888; font-size: 0.8rem;">${status.name}</span>
+                        </div>
+                        <div class="wallet-balance">
+                            <div class="balance-amount">${userWallet.balance.toLocaleString()} €</div>
+                            <div class="balance-currency">доступно</div>
+                            <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid #333;">
+                                🎁 Бонусный счет: <span class="bonus-amount">${(userWallet.bonus || 0).toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <div class="recharge-form">
+                            <input type="number" id="rechargeAmount" class="recharge-input" placeholder="Сумма пополнения €" min="10" step="10">
+                            <button class="btn btn-primary" onclick="rechargeWallet()">Пополнить</button>
+                        </div>
+                        <p style="color: #666; font-size: 0.7rem; margin-top: 0.8rem; text-align: center;">💳 Безопасные платежи • Мгновенное зачисление</p>
+                    </div>
+                </div>
+
+                ${nextStatus ? `
+                <div class="progress-section">
+                    <div class="progress-label">
+                        <span>📈 Прогресс до статуса ${nextStatus.icon} ${nextStatus.name}</span>
+                        <span>${user.bonus_points.toLocaleString()} / ${nextStatus.requirement.toLocaleString()} бонусов</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: ${Math.min(100, progress)}%"></div></div>
+                    <div style="margin-top: 0.8rem; color: #888; font-size: 0.8rem;">${nextStatus.name === 'Premium' ? '✨ Premium статус: 3% бонусов за каждую покупку' : '👑 VIP статус: 5% бонусов + эксклюзивные предложения'}</div>
+                </div>
+                ` : '<div class="progress-section"><div style="text-align: center; color: #d4af37;">🏆 Поздравляем! Вы достигли максимального статуса VIP!</div></div>'}
+
+                <div class="status-section">
+                    <h3 style="color: #d4af37;">⭐ Система статусов</h3>
+                    <div class="status-grid">
+                        <div class="status-card standard ${user.status === 'standard' ? 'active' : ''}"><div class="status-icon">⭐</div><div class="status-name">Standard</div><div class="status-bonus">1% бонусов</div><div class="status-requirement">от 0 бонусов</div></div>
+                        <div class="status-card premium ${user.status === 'premium' ? 'active' : ''}"><div class="status-icon">✨</div><div class="status-name">Premium</div><div class="status-bonus">3% бонусов</div><div class="status-requirement">от 10 000 бонусов</div></div>
+                        <div class="status-card vip ${user.status === 'vip' ? 'active' : ''}"><div class="status-icon">👑</div><div class="status-name">VIP</div><div class="status-bonus">5% бонусов</div><div class="status-requirement">от 50 000 бонусов</div></div>
+                    </div>
+                </div>
+
+                <div class="transactions-section">
+                    <h3 style="color: #d4af37;">📋 История операций</h3>
+                    <div class="transactions-list" id="transactionsList">
+                        <div style="text-align: center; color: #888; padding: 2rem;">Нет операций</div>
+                    </div>
+                </div>
+
+                <div class="orders-section">
+                    <h3 style="color: #d4af37;">🚁 История заказов</h3>
+                    <div class="orders-grid" id="ordersList">Загрузка заказов...</div>
+                </div>
+
+                <div class="edit-form">
+                    <h3 style="color: #d4af37;">✏️ Редактировать профиль</h3>
+                    <input type="text" id="editFullName" placeholder="Полное имя" value="${user.full_name || ''}">
+                    <input type="tel" id="editPhone" placeholder="Телефон" value="${user.phone || ''}">
+                    <button class="btn btn-primary" onclick="updateProfile()">Сохранить изменения</button>
+                </div>
+            `;
+
+            document.getElementById('profileContent').innerHTML = html;
+            
+            // Загружаем сохраненные транзакции
+            loadTransactions();
+        }
+
+        function loadTransactions() {
+            const saved = localStorage.getItem(`wallet_transactions_${window.currentUser?.id}`);
+            if (saved) {
+                const transactions = JSON.parse(saved);
+                const container = document.getElementById('transactionsList');
+                if (container && transactions.length > 0) {
+                    container.innerHTML = transactions.slice().reverse().map(t => `
+                        <div class="transaction-item">
+                            <div class="transaction-type ${t.type}">${t.type === 'recharge' ? '💳 Пополнение' : '🎁 Бонус'}</div>
+                            <div class="transaction-amount plus">+${t.amount.toLocaleString()} €</div>
+                            <div class="transaction-date">${new Date(t.date).toLocaleDateString()}</div>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        function saveTransaction(type, amount) {
+            const key = `wallet_transactions_${window.currentUser?.id}`;
+            const saved = localStorage.getItem(key);
+            const transactions = saved ? JSON.parse(saved) : [];
+            transactions.push({ type, amount, date: new Date().toISOString() });
+            localStorage.setItem(key, JSON.stringify(transactions.slice(-20))); // храним последние 20
+            loadTransactions();
+        }
+
+        // Переопределяем addTransaction для сохранения
+        const originalAddTransaction = addTransaction;
+        window.addTransaction = (type, amount) => {
+            originalAddTransaction(type, amount);
+            saveTransaction(type, amount);
+        };
+
+        async function loadOrders() {
+            const token = localStorage.getItem('skywag_token') || localStorage.getItem('token');
+            try {
+                const response = await fetch('http://localhost:5000/api/orders', { headers: { 'Authorization': 'Bearer ' + token } });
+                const data = await response.json();
+                const ordersList = document.getElementById('ordersList');
+                if (!ordersList) return;
+                if (!data.data || data.data.length === 0) {
+                    ordersList.innerHTML = '<div style="text-align: center; color: #888; padding: 2rem;">У вас пока нет заказов</div>';
+                    return;
+                }
+                ordersList.innerHTML = data.data.map((order, i) => `
+                    <div class="order-card" style="animation-delay: ${i * 0.05}s">
+                        <div><strong>Заказ #${order.id.slice(0, 8)}</strong><div style="color: #888; font-size: 0.75rem;">${new Date(order.created_at).toLocaleDateString()}</div></div>
+                        <div style="font-weight: bold;">${order.total_price.toLocaleString()} €</div>
+                        <div>🎁 +${order.bonus_earned.toLocaleString()} бонусов</div>
+                        <div class="order-status ${order.status}">${order.status === 'pending' ? 'В обработке' : order.status === 'confirmed' ? 'Подтвержден' : order.status === 'shipped' ? 'Отправлен' : 'Доставлен'}</div>
+                    </div>
+                `).join('');
+            } catch (error) { console.error(error); }
+        }
+
+        window.updateProfile = async () => {
+            const token = localStorage.getItem('skywag_token') || localStorage.getItem('token');
+            try {
+                const response = await fetch('http://localhost:5000/api/profile/update', {
+                    method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                    body: JSON.stringify({ full_name: document.getElementById('editFullName').value, phone: document.getElementById('editPhone').value })
+                });
+                if (response.ok) { showNotification('✅ Профиль успешно обновлен!', 'success'); loadProfile(); }
+                else { showNotification('❌ Ошибка обновления профиля', 'error'); }
+            } catch (error) { showNotification('❌ Ошибка подключения к серверу', 'error'); }
+        };
+
+        function showAuthForm() {
+            document.getElementById('profileContent').innerHTML = `
+                <div class="auth-box">
+                    <div class="auth-tabs"><div class="auth-tab active" onclick="switchAuthTab('login')">Вход</div><div class="auth-tab" onclick="switchAuthTab('register')">Регистрация</div></div>
+                    <div id="loginForm" class="auth-form active">
+                        <input type="email" id="loginEmail" placeholder="Email">
+                        <input type="password" id="loginPassword" placeholder="Пароль">
+                        <button class="btn btn-primary" onclick="loginUser()" style="width:100%">Войти</button>
+                        <p style="text-align:center; margin-top:1rem;"><a href="#" onclick="switchAuthTab('register'); return false;" style="color:#d4af37;">Нет аккаунта? Зарегистрируйтесь</a></p>
+                    </div>
+                    <div id="registerForm" class="auth-form">
+                        <input type="text" id="regName" placeholder="Полное имя">
+                        <input type="tel" id="regPhone" placeholder="Телефон">
+                        <input type="email" id="regEmail" placeholder="Email">
+                        <input type="password" id="regPassword" placeholder="Пароль (мин. 6 символов)">
+                        <button class="btn btn-primary" onclick="registerUser()" style="width:100%">Зарегистрироваться</button>
+                        <p style="text-align:center; margin-top:1rem;">🎁 При регистрации вы получите 100 бонусов!</p>
+                        <p style="text-align:center;"><a href="#" onclick="switchAuthTab('login'); return false;" style="color:#d4af37;">Уже есть аккаунт? Войдите</a></p>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.switchAuthTab = (tab) => {
+            const tabs = document.querySelectorAll('.auth-tab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            tabs.forEach(t => t.classList.remove('active'));
+            if (tab === 'login') {
+                tabs[0].classList.add('active');
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+            } else {
+                tabs[1].classList.add('active');
+                loginForm.classList.remove('active');
+                registerForm.classList.add('active');
+            }
+        };
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 80px; right: 20px; padding: 1rem 1.5rem;
+                background: ${type === 'success' ? '#2ecc71' : type === 'error' ? '#e31b23' : '#d4af37'};
+                color: ${type === 'success' ? '#fff' : type === 'error' ? '#fff' : '#000'};
+                border-radius: 15px; z-index: 10001; animation: slideInRight 0.3s ease;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.3); font-family: 'Space Grotesk', sans-serif;
+            `;
+            notification.innerHTML = message;
+            document.body.appendChild(notification);
+            setTimeout(() => { notification.style.animation = 'slideOutRight 0.3s ease'; setTimeout(() => notification.remove(), 300); }, 3000);
+        }
+
+        window.loadProfile = loadProfile;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => { const t = document.getElementById('pageTransition'); if (t) t.classList.remove('active'); }, 1000);
+            loadProfile();
+        });
+    </script>
+</body>
+</html>

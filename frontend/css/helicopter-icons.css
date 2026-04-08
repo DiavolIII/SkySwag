@@ -1,0 +1,51 @@
+.helicopter-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+    border: 2px solid #d4af37;
+    border-radius: 50%;
+    font-size: 2rem;
+    transition: all 0.3s;
+    animation: rotorSpin 4s infinite linear;
+}
+
+.helicopter-avatar-sm {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+}
+
+.helicopter-avatar-lg {
+    width: 100px;
+    height: 100px;
+    font-size: 3rem;
+}
+
+.helicopter-avatar:hover {
+    transform: rotate(15deg) scale(1.1);
+    border-color: #e31b23;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+@keyframes rotorSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* аватарки в новостях */
+.news-avatar {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* аватарки в профиле */
+.profile-avatar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}

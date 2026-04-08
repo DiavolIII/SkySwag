@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - Услуги</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .services-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero секция */
+        .services-hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            border-radius: 40px;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .services-hero::before {
+            content: '⚙️';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.03;
+            bottom: -5rem;
+            right: -5rem;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .services-hero h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #d4af37, #e31b23);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .services-hero p {
+            color: #aaa;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Сетка услуг */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease;
+            animation-fill-mode: both;
+        }
+
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
+        .service-card:nth-child(4) { animation-delay: 0.4s; }
+        .service-card:nth-child(5) { animation-delay: 0.5s; }
+        .service-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .service-card:hover::before {
+            left: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #e31b23;
+            box-shadow: 0 20px 40px rgba(227, 27, 35, 0.2);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.2rem;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+            background: linear-gradient(135deg, #d4af37, #e31b23);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .service-card h3 {
+            color: #d4af37;
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .service-card p {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features li {
+            padding: 0.5rem 0;
+            padding-left: 1.8rem;
+            position: relative;
+            color: #ccc;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .service-features li::before {
+            content: '✓';
+            color: #d4af37;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .service-card:hover .service-features li {
+            transform: translateX(5px);
+        }
+
+        .service-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: 2px solid #d4af37;
+            border-radius: 40px;
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .service-link:hover {
+            background: #d4af37;
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Дополнительная секция - почему выбирают нас */
+        .why-choose-us {
+            margin: 4rem 0;
+            padding: 3rem;
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border-radius: 40px;
+            border: 1px solid #d4af37;
+            animation: fadeInUp 0.6s ease 0.7s both;
+        }
+
+        .why-choose-us h2 {
+            text-align: center;
+            color: #d4af37;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        .benefit-item h4 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-item p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* Модальное окно */
+        .service-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .service-modal-content {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 2px solid #d4af37;
+            border-radius: 30px;
+            padding: 2rem;
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .service-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-modal-header h2 {
+            color: #d4af37;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .close-service-modal {
+            background: #e31b23;
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .close-service-modal:hover {
+            transform: rotate(90deg);
+            background: #d4af37;
+            color: #000;
+        }
+
+        .service-modal-content input,
+        .service-modal-content select,
+        .service-modal-content textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            margin: 0.5rem 0;
+            background: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 15px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .service-modal-content input:focus,
+        .service-modal-content select:focus,
+        .service-modal-content textarea:focus {
+            outline: none;
+            border-color: #e31b23;
+            box-shadow: 0 0 10px rgba(227, 27, 35, 0.3);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .services-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .services-container {
+                padding: 1rem;
+            }
+            .services-hero h1 {
+                font-size: 2rem;
+            }
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .service-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">SkySwag<small>sky is the limit</small></div>
+    </div>
+
+    <div class="app">
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item" onclick="navigateTo('index')"><span class="nav-icon">🏠</span><span>Главная</span></span>
+                <span class="nav-item" onclick="navigateTo('catalog')"><span class="nav-icon">🚁</span><span>Каталог</span></span>
+                <span class="nav-item active" onclick="navigateTo('services')"><span class="nav-icon">⚙️</span><span>Услуги</span></span>
+                <span class="nav-item" onclick="navigateTo('about')"><span class="nav-icon">ℹ️</span><span>О компании</span></span>
+                <span class="nav-item" onclick="navigateTo('news')"><span class="nav-icon">📰</span><span>Новости</span></span>
+                <span class="nav-item" onclick="navigateTo('leasing')"><span class="nav-icon">💰</span><span>Лизинг</span></span>
+                <span class="nav-item" onclick="navigateTo('configurator')"><span class="nav-icon">🛠️</span><span>Конфигуратор</span></span>
+                <span class="nav-item" onclick="navigateTo('profile')"><span class="nav-icon">👤</span><span>Профиль</span></span>
+            </nav>
+            <button class="action-btn" onclick="showOfferForm()">📞 Получить предложение</button>
+            <div id="authContainer"></div>
+        </header>
+
+        <main class="main-content">
+            <div id="breadcrumbs" class="breadcrumbs"></div>
+            <div class="services-container">
+                <div class="services-hero">
+                    <h1>⚙️ Наши услуги</h1>
+                    <p>Полный спектр услуг по покупке, обслуживанию и эксплуатации вертолетов</p>
+                </div>
+
+                <div class="services-grid">
+                    <!-- Лизинг и кредитование -->
+                    <div class="service-card" onclick="showServiceForm('leasing')">
+                        <div class="service-icon">💰</div>
+                        <h3>Лизинг и кредитование</h3>
+                        <p>Выгодные финансовые решения с гибкими условиями оплаты</p>
+                        <ul class="service-features">
+                            <li>Ставка от 8% годовых</li>
+                            <li>Первоначальный взнос от 15%</li>
+                            <li>Срок до 7 лет</li>
+                            <li>Индивидуальный график платежей</li>
+                        </ul>
+                        <div class="service-link">📝 Оставить заявку →</div>
+                    </div>
+
+                    <!-- Доставка по всему миру -->
+                    <div class="service-card" onclick="showServiceForm('delivery')">
+                        <div class="service-icon">✈️</div>
+                        <h3>Доставка по всему миру</h3>
+                        <p>Быстрая и безопасная доставка в любую точку мира</p>
+                        <ul class="service-features">
+                            <li>Авиадоставка (3-7 дней)</li>
+                            <li>Морская доставка (14-30 дней)</li>
+                            <li>Страхование груза</li>
+                            <li>Таможенное оформление</li>
+                        </ul>
+                        <div class="service-link">🚚 Рассчитать стоимость →</div>
+                    </div>
+
+                    <!-- Покупка вертолетов -->
+                    <div class="service-card" onclick="navigateTo('catalog')">
+                        <div class="service-icon">🏷️</div>
+                        <h3>Покупка вертолетов</h3>
+                        <p>Новые и подержанные вертолеты от ведущих производителей</p>
+                        <ul class="service-features">
+                            <li>Проверка истории</li>
+                            <li>Технический аудит</li>
+                            <li>Юридическое сопровождение</li>
+                            <li>Гарантия 1 год</li>
+                        </ul>
+                        <div class="service-link">🚁 Смотреть каталог →</div>
+                    </div>
+
+                    <!-- Техническое обслуживание -->
+                    <div class="service-card" onclick="showServiceForm('service')">
+                        <div class="service-icon">🔧</div>
+                        <h3>Техническое обслуживание</h3>
+                        <p>Сертифицированный сервисный центр полного цикла</p>
+                        <ul class="service-features">
+                            <li>Регламентное ТО</li>
+                            <li>Капитальный ремонт</li>
+                            <li>Диагностика авионики</li>
+                            <li>Выездное обслуживание</li>
+                        </ul>
+                        <div class="service-link">🔧 Записаться на ТО →</div>
+                    </div>
+
+                    <!-- Страхование -->
+                    <div class="service-card" onclick="showServiceForm('insurance')">
+                        <div class="service-icon">🛡️</div>
+                        <h3>Страхование</h3>
+                        <p>Полный спектр страховых услуг для авиационной техники</p>
+                        <ul class="service-features">
+                            <li>КАСКО</li>
+                            <li>Страхование ответственности</li>
+                            <li>Страхование экипажа</li>
+                            <li>Страхование грузов</li>
+                        </ul>
+                        <div class="service-link">📋 Получить расчет →</div>
+                    </div>
+
+                    <!-- Обучение пилотов -->
+                    <div class="service-card" onclick="showServiceForm('training')">
+                        <div class="service-icon">🎓</div>
+                        <h3>Обучение пилотов</h3>
+                        <p>Подготовка и переподготовка пилотов любой сложности</p>
+                        <ul class="service-features">
+                            <li>Первичное обучение</li>
+                            <li>Повышение квалификации</li>
+                            <li>Тренажерная подготовка</li>
+                            <li>Сертификация</li>
+                        </ul>
+                        <div class="service-link">📚 Записаться на курс →</div>
+                    </div>
+                </div>
+
+                <!-- Почему выбирают нас -->
+                <div class="why-choose-us">
+                    <h2>✨ Почему выбирают SkySwag</h2>
+                    <div class="benefits-grid">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🏆</div>
+                            <h4>10+ лет опыта</h4>
+                            <p>Более 10 лет успешной работы на рынке</p>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🌍</div>
+                            <h4>20+ стран</h4>
+                            <p>Поставки вертолетов по всему миру</p>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">👨‍✈️</div>
+                            <h4>50+ специалистов</h4>
+                            <p>Сертифицированные инженеры и пилоты</p>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">⭐</div>
+                            <h4>98% довольных клиентов</h4>
+                            <p>Высокий уровень сервиса и качества</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                </div>
+                <div class="footer-contact">
+                    <p>info@skywag.ru</p>
+                    <p>+7 (495) 123-45-67</p>
+                    <p>© 2024 SkySwag. Все права защищены</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="js/analytics.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script>
+        // Данные для формы по услугам
+        const serviceData = {
+            leasing: {
+                title: '💰 Лизинг и кредитование',
+                fields: ['Имя', 'Телефон', 'Email', 'Желаемая сумма', 'Срок кредита (лет)'],
+                placeholders: ['Ваше имя', '+7 (___) ___-__-__', 'email@example.com', 'от 1 000 000 €', '1-7 лет']
+            },
+            delivery: {
+                title: '✈️ Доставка по всему миру',
+                fields: ['Имя', 'Телефон', 'Email', 'Страна доставки', 'Тип вертолета'],
+                placeholders: ['Ваше имя', '+7 (___) ___-__-__', 'email@example.com', 'Россия, ОАЭ, Европа...', 'Модель вертолета']
+            },
+            service: {
+                title: '🔧 Техническое обслуживание',
+                fields: ['Имя', 'Телефон', 'Email', 'Модель вертолета', 'Тип обслуживания'],
+                placeholders: ['Ваше имя', '+7 (___) ___-__-__', 'email@example.com', 'Модель вертолета', 'ТО-1 / ТО-2 / Капремонт']
+            },
+            insurance: {
+                title: '🛡️ Страхование',
+                fields: ['Имя', 'Телефон', 'Email', 'Модель вертолета', 'Тип страховки'],
+                placeholders: ['Ваше имя', '+7 (___) ___-__-__', 'email@example.com', 'Модель вертолета', 'КАСКО / ОСАГО / Полный пакет']
+            },
+            training: {
+                title: '🎓 Обучение пилотов',
+                fields: ['Имя', 'Телефон', 'Email', 'Желаемый курс', 'Уровень подготовки'],
+                placeholders: ['Ваше имя', '+7 (___) ___-__-__', 'email@example.com', 'Private / Commercial / Instrument', 'Начинающий / Опытный']
+            }
+        };
+
+        // Показать форму услуги
+        window.showServiceForm = (serviceType) => {
+            const data = serviceData[serviceType];
+            if (!data) return;
+
+            const modal = document.createElement('div');
+            modal.className = 'service-modal';
+            
+            let fieldsHtml = '';
+            for (let i = 0; i < data.fields.length; i++) {
+                fieldsHtml += `
+                    <input type="${data.fields[i] === 'Email' ? 'email' : data.fields[i].includes('Телефон') ? 'tel' : 'text'}" 
+                           id="service_${data.fields[i].toLowerCase().replace(/[^a-zа-яё]/g, '_')}" 
+                           placeholder="${data.placeholders[i]}" 
+                           ${data.fields[i] === 'Имя' || data.fields[i] === 'Телефон' ? 'required' : ''}>
+                `;
+            }
+
+            modal.innerHTML = `
+                <div class="service-modal-content">
+                    <div class="service-modal-header">
+                        <h2>${data.title}</h2>
+                        <button class="close-service-modal" onclick="closeServiceModal()">&times;</button>
+                    </div>
+                    <form id="serviceForm" onsubmit="submitServiceRequest(event, '${serviceType}')">
+                        ${fieldsHtml}
+                        <textarea id="service_comment" placeholder="Дополнительная информация или вопросы" rows="3"></textarea>
+                        <div style="background: #1a1a1a; padding: 1rem; border-radius: 15px; margin: 1rem 0; font-size: 0.9rem;">
+                            <p>📞 После отправки заявки наш специалист свяжется с вами в течение 15 минут</p>
+                            <p>🎁 При обращении через сайт вы получите консультацию бесплатно!</p>
+                        </div>
+                        <button type="submit" class="service-link" style="width:100%; margin-top: 0.5rem;">📩 Отправить заявку</button>
+                        <button type="button" class="service-link" onclick="closeServiceModal()" style="width:100%; margin-top: 0.5rem; background: transparent;">Отмена</button>
+                    </form>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        };
+
+        // Закрыть модальное окно услуги
+        window.closeServiceModal = () => {
+            const modal = document.querySelector('.service-modal');
+            if (modal) modal.remove();
+        };
+
+        // Отправить заявку на услугу
+        window.submitServiceRequest = async (e, serviceType) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            data.service_type = serviceType;
+            data.service_name = serviceData[serviceType]?.title || serviceType;
+            
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Отправка...';
+            submitBtn.disabled = true;
+            
+            try {
+                const token = localStorage.getItem('skywag_token') || localStorage.getItem('token');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+                
+                const response = await fetch('http://localhost:5000/api/estimates', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    alert(`✅ Заявка на услугу "${data.service_name}" успешно отправлена!\n\nНаш специалист свяжется с вами в ближайшее время.`);
+                    closeServiceModal();
+                } else {
+                    alert('❌ Ошибка отправки. Пожалуйста, попробуйте позже.');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('❌ Ошибка подключения к серверу. Проверьте интернет-соединение.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        };
+
+        // Анимация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const transition = document.getElementById('pageTransition');
+                if (transition) transition.classList.remove('active');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

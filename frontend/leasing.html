@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - Лизинг и кредитование</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes borderGlow {
+            0%, 100% {
+                border-color: #d4af37;
+                box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+            }
+            50% {
+                border-color: #e31b23;
+                box-shadow: 0 0 20px rgba(227, 27, 35, 0.5);
+            }
+        }
+
+        .leasing-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero секция с переливающимся названием */
+        .leasing-hero {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            border-radius: 40px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .leasing-hero::before {
+            content: '💰';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.03;
+            bottom: -5rem;
+            right: -5rem;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .leasing-hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #d4af37, #e31b23, #d4af37);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .leasing-hero p {
+            color: #aaa;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Калькулятор */
+        .calculator {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            padding: 2rem;
+            margin: 2rem 0;
+            animation: fadeInUp 0.5s ease 0.1s both;
+            transition: all 0.3s;
+        }
+
+        .calculator:hover {
+            border-color: #e31b23;
+            box-shadow: 0 10px 30px rgba(227, 27, 35, 0.2);
+        }
+
+        .calculator h2 {
+            text-align: center;
+            color: #d4af37;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .calculator-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .calculator-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .calculator-item:hover {
+            transform: translateY(-5px);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .calculator-item label {
+            color: #d4af37;
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .calculator-item input[type=range] {
+            width: 100%;
+            height: 6px;
+            background: #2a2a2a;
+            border-radius: 3px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .calculator-item input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #d4af37;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .calculator-item input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: #e31b23;
+        }
+
+        .range-value {
+            margin-top: 1rem;
+            font-size: 1.3rem;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .calculator-result {
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s;
+        }
+
+        .result-item:hover {
+            transform: translateX(10px);
+            padding-left: 1rem;
+        }
+
+        .result-item .value {
+            color: #d4af37;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .calc-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #d4af37, #e31b23);
+            border: none;
+            border-radius: 50px;
+            color: #000;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Преимущества лизинга */
+        .benefits-section {
+            margin: 3rem 0;
+            animation: fadeInUp 0.5s ease 0.2s both;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .benefit-card {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 1px solid #d4af37;
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            border-color: #e31b23;
+            box-shadow: 0 10px 25px rgba(227, 27, 35, 0.2);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: float 3s infinite;
+        }
+
+        .benefit-card h3 {
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .benefit-card p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* Программы */
+        .programs-section {
+            margin: 3rem 0;
+            animation: fadeInUp 0.5s ease 0.3s both;
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .program-card {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 1px solid #d4af37;
+            border-radius: 24px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .program-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .program-card:hover::before {
+            left: 100%;
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+            border-color: #e31b23;
+        }
+
+        .program-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .program-card h3 {
+            color: #d4af37;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .program-rate {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e31b23;
+            margin: 1rem 0;
+        }
+
+        .program-desc {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .program-features {
+            list-style: none;
+            text-align: left;
+            margin-top: 1rem;
+        }
+
+        .program-features li {
+            padding: 0.3rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #ccc;
+            font-size: 0.85rem;
+        }
+
+        .program-features li::before {
+            content: '✓';
+            color: #d4af37;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Партнеры */
+        .partners-section {
+            margin: 3rem 0;
+            animation: fadeInUp 0.5s ease 0.4s both;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .partner-card {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 1px solid #d4af37;
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+        }
+
+        .partner-card:hover {
+            transform: translateY(-5px);
+            border-color: #e31b23;
+            box-shadow: 0 10px 25px rgba(227, 27, 35, 0.2);
+        }
+
+        .partner-icon {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .partner-name {
+            color: #fff;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .partner-desc {
+            color: #d4af37;
+            font-size: 0.8rem;
+        }
+
+        /* Гарантии */
+        .guarantees-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border-radius: 30px;
+            border: 1px solid #d4af37;
+            animation: fadeInUp 0.5s ease 0.5s both;
+        }
+
+        .guarantees-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .guarantee-item {
+            text-align: center;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .guarantee-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .guarantee-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .guarantee-item h4 {
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+        }
+
+        .guarantee-item p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 992px) {
+            .calculator-row {
+                grid-template-columns: 1fr;
+            }
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .programs-grid {
+                grid-template-columns: 1fr;
+            }
+            .guarantees-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .leasing-container {
+                padding: 1rem;
+            }
+            .leasing-hero h1 {
+                font-size: 2rem;
+            }
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">SkySwag<small>sky is the limit</small></div>
+    </div>
+
+    <div class="app">
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item" onclick="navigateTo('index')"><span class="nav-icon">🏠</span><span>Главная</span></span>
+                <span class="nav-item" onclick="navigateTo('catalog')"><span class="nav-icon">🚁</span><span>Каталог</span></span>
+                <span class="nav-item" onclick="navigateTo('services')"><span class="nav-icon">⚙️</span><span>Услуги</span></span>
+                <span class="nav-item" onclick="navigateTo('about')"><span class="nav-icon">ℹ️</span><span>О компании</span></span>
+                <span class="nav-item" onclick="navigateTo('news')"><span class="nav-icon">📰</span><span>Новости</span></span>
+                <span class="nav-item active" onclick="navigateTo('leasing')"><span class="nav-icon">💰</span><span>Лизинг</span></span>
+                <span class="nav-item" onclick="navigateTo('configurator')"><span class="nav-icon">🛠️</span><span>Конфигуратор</span></span>
+                <span class="nav-item" onclick="navigateTo('profile')"><span class="nav-icon">👤</span><span>Профиль</span></span>
+            </nav>
+            <button class="action-btn" onclick="showOfferForm()">📞 Получить предложение</button>
+            <div id="authContainer"></div>
+        </header>
+
+        <main class="main-content">
+            <div id="breadcrumbs" class="breadcrumbs"></div>
+            <div class="leasing-container">
+                <div class="leasing-hero">
+                    <h1>💰 Лизинг и кредитование</h1>
+                    <p>Выгодные финансовые решения с гибкими условиями оплаты</p>
+                </div>
+
+                <!-- Калькулятор лизинга -->
+                <div class="calculator">
+                    <h2>📊 Калькулятор лизинга</h2>
+                    <div class="calculator-row">
+                        <div class="calculator-item">
+                            <label>🚁 Стоимость вертолета, €</label>
+                            <input type="range" id="priceRange" min="1000000" max="10000000" step="100000" value="4500000">
+                            <div class="range-value" id="priceValue">4 500 000 €</div>
+                        </div>
+                        <div class="calculator-item">
+                            <label>💵 Первоначальный взнос, %</label>
+                            <input type="range" id="depositRange" min="10" max="50" step="5" value="20">
+                            <div class="range-value" id="depositValue">20%</div>
+                        </div>
+                        <div class="calculator-item">
+                            <label>📅 Срок кредита, лет</label>
+                            <input type="range" id="termRange" min="1" max="7" step="1" value="5">
+                            <div class="range-value" id="termValue">5 лет</div>
+                        </div>
+                    </div>
+                    <div class="calculator-result">
+                        <div class="result-item"><span>💰 Первоначальный взнос:</span><span class="value" id="initialPayment">900 000 €</span></div>
+                        <div class="result-item"><span>📆 Ежемесячный платеж:</span><span class="value" id="monthlyPayment">72 500 €</span></div>
+                        <div class="result-item"><span>📈 Переплата за весь срок:</span><span class="value" id="overpayment">850 000 €</span></div>
+                        <div class="result-item"><span>🏦 Общая сумма выплат:</span><span class="value" id="totalPayment">0 €</span></div>
+                    </div>
+                    <button class="calc-btn" onclick="showLeasingForm()">📩 Получить индивидуальное предложение</button>
+                </div>
+
+                <!-- Преимущества лизинга -->
+                <div class="benefits-section">
+                    <h2 class="section-title">✨ Преимущества лизинга в SkySwag</h2>
+                    <div class="benefits-grid">
+                        <div class="benefit-card">
+                            <div class="benefit-icon">⚡</div>
+                            <h3>Быстрое одобрение</h3>
+                            <p>Решение за 24 часа, минимальный пакет документов</p>
+                        </div>
+                        <div class="benefit-card">
+                            <div class="benefit-icon">📉</div>
+                            <h3>Низкие ставки</h3>
+                            <p>От 8% годовых, фиксированная ставка на весь срок</p>
+                        </div>
+                        <div class="benefit-card">
+                            <div class="benefit-icon">🤝</div>
+                            <h3>Индивидуальный подход</h3>
+                            <p>Учитываем особенности вашего бизнеса</p>
+                        </div>
+                        <div class="benefit-card">
+                            <div class="benefit-icon">📄</div>
+                            <h3>Минимум документов</h3>
+                            <p>Упрощенная процедура, паспорт и ИНН</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Программы кредитования -->
+                <div class="programs-section">
+                    <h2 class="section-title">🏦 Программы кредитования</h2>
+                    <div class="programs-grid">
+                        <div class="program-card">
+                            <div class="program-icon">⭐</div>
+                            <h3>Стандарт</h3>
+                            <div class="program-rate">от 8%</div>
+                            <div class="program-desc">Классическая программа для всех клиентов</div>
+                            <ul class="program-features">
+                                <li>Срок до 7 лет</li>
+                                <li>Взнос от 20%</li>
+                                <li>Без комиссии за досрочное погашение</li>
+                            </ul>
+                        </div>
+                        <div class="program-card">
+                            <div class="program-icon">✨</div>
+                            <h3>Премиум</h3>
+                            <div class="program-rate">от 6.5%</div>
+                            <div class="program-desc">Для Premium и VIP клиентов</div>
+                            <ul class="program-features">
+                                <li>Срок до 10 лет</li>
+                                <li>Взнос от 10%</li>
+                                <li>Бонус 1000€ на первый платеж</li>
+                                <li>Ускоренное одобрение</li>
+                            </ul>
+                        </div>
+                        <div class="program-card">
+                            <div class="program-icon">👑</div>
+                            <h3>VIP Лизинг</h3>
+                            <div class="program-rate">от 5.5%</div>
+                            <div class="program-desc">Эксклюзивные условия для бизнеса</div>
+                            <ul class="program-features">
+                                <li>Срок до 12 лет</li>
+                                <li>Взнос от 5%</li>
+                                <li>Отсрочка платежа 6 месяцев</li>
+                                <li>Индивидуальный график</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Гарантии и страховки -->
+                <div class="guarantees-section">
+                    <h2 class="section-title">🛡️ Гарантии и страховки</h2>
+                    <div class="guarantees-grid">
+                        <div class="guarantee-item">
+                            <div class="guarantee-icon">🏦</div>
+                            <h4>Страхование КАСКО</h4>
+                            <p>Полная защита от угона, повреждений и аварий</p>
+                        </div>
+                        <div class="guarantee-item">
+                            <div class="guarantee-icon">⚖️</div>
+                            <h4>Юридическая защита</h4>
+                            <p>Полное сопровождение сделки, проверка документов</p>
+                        </div>
+                        <div class="guarantee-item">
+                            <div class="guarantee-icon">🔧</div>
+                            <h4>Гарантия 3 года</h4>
+                            <p>Бесплатное техническое обслуживание в первый год</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Партнеры -->
+                <div class="partners-section">
+                    <h2 class="section-title">🤝 Наши партнеры</h2>
+                    <div class="partners-grid">
+                        <a href="https://www.sberbank.ru" target="_blank" class="partner-card">
+                            <div class="partner-icon">🏦</div>
+                            <div class="partner-name">СБЕР БАНК</div>
+                            <div class="partner-desc">Официальный сайт →</div>
+                        </a>
+                        <a href="https://www.gazprombank.ru" target="_blank" class="partner-card">
+                            <div class="partner-icon">🏦</div>
+                            <div class="partner-name">ГАЗПРОМБАНК</div>
+                            <div class="partner-desc">Официальный сайт →</div>
+                        </a>
+                        <a href="https://www.vtb.ru" target="_blank" class="partner-card">
+                            <div class="partner-icon">🏦</div>
+                            <div class="partner-name">ВТБ</div>
+                            <div class="partner-desc">Официальный сайт →</div>
+                        </a>
+                        <a href="https://alfabank.ru" target="_blank" class="partner-card">
+                            <div class="partner-icon">🏦</div>
+                            <div class="partner-name">АЛЬФА-БАНК</div>
+                            <div class="partner-desc">Официальный сайт →</div>
+                        </a>
+                        <a href="https://www.rshb.ru" target="_blank" class="partner-card">
+                            <div class="partner-icon">🏦</div>
+                            <div class="partner-name">РОССЕЛЬХОЗБАНК</div>
+                            <div class="partner-desc">Официальный сайт →</div>
+                        </a>
+                        <a href="https://www.psbank.ru" target="_blank" class="partner-card">
+                            <div class="partner-icon">🏦</div>
+                            <div class="partner-name">ПСБ</div>
+                            <div class="partner-desc">Официальный сайт →</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                </div>
+                <div class="footer-contact">
+                    <p>info@skywag.ru</p>
+                    <p>+7 (495) 123-45-67</p>
+                    <p>© 2024 SkySwag. Все права защищены</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="js/analytics.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script>
+        function updateCalculator() {
+            const price = parseFloat(document.getElementById('priceRange').value);
+            const depositPercent = parseFloat(document.getElementById('depositRange').value);
+            const term = parseFloat(document.getElementById('termRange').value);
+            
+            document.getElementById('priceValue').textContent = price.toLocaleString() + ' €';
+            document.getElementById('depositValue').textContent = depositPercent + '%';
+            document.getElementById('termValue').textContent = term + ' ' + getYearWord(term);
+            
+            const deposit = price * depositPercent / 100;
+            const loanAmount = price - deposit;
+            const monthlyRate = 0.08 / 12;
+            const months = term * 12;
+            const monthlyPayment = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
+            const totalPayment = monthlyPayment * months;
+            const overpayment = totalPayment - loanAmount;
+            
+            document.getElementById('initialPayment').textContent = deposit.toLocaleString() + ' €';
+            document.getElementById('monthlyPayment').textContent = Math.round(monthlyPayment).toLocaleString() + ' €';
+            document.getElementById('overpayment').textContent = Math.round(overpayment).toLocaleString() + ' €';
+            document.getElementById('totalPayment').textContent = Math.round(totalPayment).toLocaleString() + ' €';
+        }
+        
+        function getYearWord(years) {
+            const lastDigit = years % 10;
+            const lastTwo = years % 100;
+            if (lastTwo >= 11 && lastTwo <= 14) return 'лет';
+            if (lastDigit === 1) return 'год';
+            if (lastDigit >= 2 && lastDigit <= 4) return 'года';
+            return 'лет';
+        }
+        
+        function showLeasingForm() {
+            const price = parseFloat(document.getElementById('priceRange').value).toLocaleString();
+            const deposit = parseFloat(document.getElementById('depositRange').value);
+            const term = parseFloat(document.getElementById('termRange').value);
+            
+            const modal = document.createElement('div');
+            modal.className = 'leasing-modal';
+            modal.innerHTML = `
+                <div class="leasing-modal-content">
+                    <div class="leasing-modal-header">
+                        <h2>📝 Заявка на лизинг</h2>
+                        <button class="close-modal" onclick="closeLeasingModal()">&times;</button>
+                    </div>
+                    <form id="leasingForm" onsubmit="submitLeasingRequest(event)">
+                        <input type="text" id="leasingName" placeholder="Ваше имя" required>
+                        <input type="tel" id="leasingPhone" placeholder="Телефон" required>
+                        <input type="email" id="leasingEmail" placeholder="Email">
+                        <div style="background: #1a1a1a; padding: 1rem; border-radius: 15px; margin: 1rem 0;">
+                            <p><strong>Выбранные параметры:</strong></p>
+                            <p>💰 Стоимость: ${price} €</p>
+                            <p>💵 Первоначальный взнос: ${deposit}%</p>
+                            <p>📅 Срок: ${term} ${getYearWord(term)}</p>
+                        </div>
+                        <textarea id="leasingComment" placeholder="Дополнительная информация" rows="3"></textarea>
+                        <button type="submit" class="calc-btn" style="width:100%">📩 Отправить заявку</button>
+                    </form>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Добавляем стили для модального окна
+            const style = document.createElement('style');
+            style.textContent = `
+                .leasing-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.95);
+                    backdrop-filter: blur(5px);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10000;
+                    animation: fadeIn 0.3s ease;
+                }
+                .leasing-modal-content {
+                    background: linear-gradient(135deg, #141414, #0a0a0a);
+                    border: 2px solid #d4af37;
+                    border-radius: 30px;
+                    padding: 2rem;
+                    max-width: 500px;
+                    width: 90%;
+                    animation: scaleIn 0.3s ease;
+                }
+                .leasing-modal-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 1.5rem;
+                }
+                .leasing-modal-header h2 {
+                    color: #d4af37;
+                    margin: 0;
+                }
+                .close-modal {
+                    background: #e31b23;
+                    border: none;
+                    color: white;
+                    width: 35px;
+                    height: 35px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    font-size: 1.2rem;
+                    transition: all 0.3s;
+                }
+                .close-modal:hover {
+                    transform: rotate(90deg);
+                    background: #d4af37;
+                    color: #000;
+                }
+                .leasing-modal-content input,
+                .leasing-modal-content textarea {
+                    width: 100%;
+                    padding: 0.8rem 1rem;
+                    margin: 0.5rem 0;
+                    background: #1a1a1a;
+                    border: 1px solid #d4af37;
+                    border-radius: 15px;
+                    color: #fff;
+                    font-family: inherit;
+                }
+                .leasing-modal-content input:focus,
+                .leasing-modal-content textarea:focus {
+                    outline: none;
+                    border-color: #e31b23;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                @keyframes scaleIn {
+                    from { transform: scale(0.9); opacity: 0; }
+                    to { transform: scale(1); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        function closeLeasingModal() {
+            const modal = document.querySelector('.leasing-modal');
+            if (modal) modal.remove();
+        }
+        
+        async function submitLeasingRequest(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('leasingName').value,
+                phone: document.getElementById('leasingPhone').value,
+                email: document.getElementById('leasingEmail').value,
+                comment: document.getElementById('leasingComment').value,
+                type: 'leasing_request',
+                price: parseFloat(document.getElementById('priceRange').value),
+                deposit: parseFloat(document.getElementById('depositRange').value),
+                term: parseFloat(document.getElementById('termRange').value)
+            };
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Отправка...';
+            submitBtn.disabled = true;
+            
+            try {
+                const token = localStorage.getItem('skywag_token') || localStorage.getItem('token');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+                
+                const response = await fetch('http://localhost:5000/api/estimates', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    alert('✅ Заявка на лизинг успешно отправлена!\n\nНаш специалист свяжется с вами в ближайшее время.');
+                    closeLeasingModal();
+                } else {
+                    alert('❌ Ошибка отправки. Пожалуйста, попробуйте позже.');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('❌ Ошибка подключения к серверу. Проверьте интернет-соединение.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+        
+        document.getElementById('priceRange')?.addEventListener('input', updateCalculator);
+        document.getElementById('depositRange')?.addEventListener('input', updateCalculator);
+        document.getElementById('termRange')?.addEventListener('input', updateCalculator);
+        updateCalculator();
+    </script>
+</body>
+</html> 

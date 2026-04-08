@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkySwag - Новости и события</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes borderGlow {
+            0%, 100% {
+                border-color: rgba(212, 175, 55, 0.3);
+                box-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
+            }
+            50% {
+                border-color: rgba(227, 27, 35, 0.5);
+                box-shadow: 0 0 20px rgba(227, 27, 35, 0.3);
+            }
+        }
+
+        .news-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero секция с видео фоном */
+        .news-hero {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            border-radius: 40px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .news-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1600') center/cover;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .news-hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+        }
+
+        .news-hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #d4af37, #e31b23, #d4af37);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 4s linear infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        .news-hero p {
+            color: #ccc;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Категории */
+        .news-categories {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.5s ease 0.1s both;
+        }
+
+        .category-btn {
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid #d4af37;
+            color: #fff;
+            padding: 0.6rem 1.8rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .category-btn:hover::before {
+            left: 100%;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: linear-gradient(135deg, #d4af37, #e31b23);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Сетка новостей */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .news-card {
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            animation: fadeInUp 0.5s ease;
+            animation-fill-mode: both;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .news-card:nth-child(1) { animation-delay: 0.1s; }
+        .news-card:nth-child(2) { animation-delay: 0.2s; }
+        .news-card:nth-child(3) { animation-delay: 0.3s; }
+        .news-card:nth-child(4) { animation-delay: 0.4s; }
+        .news-card:nth-child(5) { animation-delay: 0.5s; }
+        .news-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .news-card:hover {
+            transform: translateY(-12px);
+            border-color: #e31b23;
+            box-shadow: 0 25px 50px rgba(227, 27, 35, 0.3);
+        }
+
+        .news-image {
+            height: 260px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-card:hover .news-image {
+            transform: scale(1.08);
+        }
+
+        .news-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        }
+
+        .news-category-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #e31b23, #c0392b);
+            color: #fff;
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .news-date-badge {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            color: #d4af37;
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            z-index: 2;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-title {
+            font-size: 1.35rem;
+            color: #fff;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .news-card:hover .news-title {
+            color: #d4af37;
+        }
+
+        .news-excerpt {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+        }
+
+        .news-stats {
+            display: flex;
+            gap: 1.2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #888;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .stat-item:hover {
+            color: #d4af37;
+            transform: scale(1.05);
+        }
+
+        .stat-icon {
+            font-size: 1rem;
+        }
+
+        .stat-count {
+            font-weight: 600;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #d4af37;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .read-more:hover {
+            gap: 1rem;
+            color: #e31b23;
+        }
+
+        /* Модальное окно */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            max-width: 900px;
+            width: 90%;
+            max-height: 85vh;
+            background: linear-gradient(135deg, #141414, #0a0a0a);
+            border: 2px solid #d4af37;
+            border-radius: 30px;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 45px;
+            height: 45px;
+            background: #e31b23;
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg);
+            background: #d4af37;
+            color: #000;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #d4af37;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .modal-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #888;
+        }
+
+        .modal-content-text {
+            color: #ccc;
+            line-height: 1.8;
+        }
+
+        .modal-content-text h3 {
+            color: #d4af37;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .modal-content-text ul, .modal-content-text ol {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .modal-content-text li {
+            margin: 0.5rem 0;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #2a2a2a;
+        }
+
+        .modal-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.2rem;
+            background: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-action-btn:hover {
+            background: #d4af37;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        .modal-action-btn.liked {
+            background: #e31b23;
+            border-color: #e31b23;
+            color: #fff;
+        }
+
+        /* Пагинация */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            background: transparent;
+            border: 1px solid #d4af37;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 40px;
+        }
+
+        .page-btn:hover, .page-btn.active {
+            background: #d4af37;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            margin-bottom: 1rem;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .breadcrumbs a {
+            color: #d4af37;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumbs a:hover {
+            color: #e31b23;
+        }
+
+        @media (max-width: 768px) {
+            .news-container {
+                padding: 1rem;
+            }
+            .news-hero h1 {
+                font-size: 2rem;
+            }
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-title {
+                font-size: 1.5rem;
+            }
+            .modal-meta {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            .modal-image {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition" id="pageTransition">
+        <div class="shimmer-logo">SkySwag<small>sky is the limit</small></div>
+    </div>
+
+    <div class="app">
+        <header class="hotbar">
+            <div class="logo-area" onclick="navigateTo('index')">
+                SkySwag
+                <small>sky is the limit</small>
+            </div>
+            <nav class="nav-links">
+                <span class="nav-item" onclick="navigateTo('index')"><span class="nav-icon">🏠</span><span>Главная</span></span>
+                <span class="nav-item" onclick="navigateTo('catalog')"><span class="nav-icon">🚁</span><span>Каталог</span></span>
+                <span class="nav-item" onclick="navigateTo('services')"><span class="nav-icon">⚙️</span><span>Услуги</span></span>
+                <span class="nav-item" onclick="navigateTo('about')"><span class="nav-icon">ℹ️</span><span>О компании</span></span>
+                <span class="nav-item active" onclick="navigateTo('news')"><span class="nav-icon">📰</span><span>Новости</span></span>
+                <span class="nav-item" onclick="navigateTo('leasing')"><span class="nav-icon">💰</span><span>Лизинг</span></span>
+                <span class="nav-item" onclick="navigateTo('configurator')"><span class="nav-icon">🛠️</span><span>Конфигуратор</span></span>
+                <span class="nav-item" onclick="navigateTo('profile')"><span class="nav-icon">👤</span><span>Профиль</span></span>
+            </nav>
+            <button class="action-btn" onclick="showOfferForm()">📞 Получить предложение</button>
+            <div id="authContainer"></div>
+        </header>
+
+        <main class="main-content">
+            <div id="breadcrumbs" class="breadcrumbs"></div>
+            <div class="news-container">
+                <div class="news-hero">
+                    <h1>📰 Новости и события</h1>
+                    <p>Будьте в курсе последних новостей вертолетной индустрии</p>
+                </div>
+
+                <div class="news-categories" id="categories"></div>
+                <div class="news-grid" id="newsGrid"></div>
+                <div class="pagination" id="pagination"></div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">SkySwag</div>
+                <div class="footer-links">
+                    <a onclick="navigateTo('catalog')">Каталог</a>
+                    <a onclick="navigateTo('services')">Услуги</a>
+                    <a onclick="navigateTo('about')">О компании</a>
+                    <a onclick="navigateTo('news')">Новости</a>
+                    <a onclick="navigateTo('leasing')">Лизинг</a>
+                    <a onclick="navigateTo('configurator')">Конфигуратор</a>
+                </div>
+                <div class="footer-contact">
+                    <p>📧 info@skywag.ru</p>
+                    <p>📞 +7 (495) 123-45-67</p>
+                    <p>© 2024 SkySwag. Все права защищены</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="newsModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script src="js/analytics.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script>
+        // Инициализация хлебных крошек
+        createBreadcrumbs([
+            { name: 'Главная', url: 'index.html' },
+            { name: 'Новости' }
+        ]);
+        
+        // Инициализация трекинга
+        initPageTracking('Новости', ['Главная', 'Новости']);
+
+        // Расширенные данные новостей с красивыми фотографиями из интернета
+        const newsData = [
+            { 
+                id: 1, 
+                title: "Airbus H130: новая эра VIP-перевозок", 
+                date: "15 июня 2026", 
+                category: "Поставки", 
+                image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&h=500&fit=crop", 
+                excerpt: "SkySwag осуществила историческую поставку трех вертолетов Airbus H130 в премиальной комплектации для VIP-перевозок. Каждая машина оснащена по последнему слову техники.", 
+                views: 2345,
+                likes: 189,
+                shares: 67,
+                comments: 23,
+                fullContent: `
+                    <h2>🚁 Историческая поставка трех вертолетов Airbus H130</h2>
+                    <img src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1200&h=600&fit=crop" class="modal-image" alt="Airbus H130">
+                    <p>Компания SkySwag с гордостью объявляет о завершении крупнейшей сделки по поставке трех вертолетов Airbus H130 в премиальной комплектации для VIP-перевозок. Это событие знаменует новый этап в развитии рынка деловой авиации в России.</p>
+                    <h3>📊 Технические характеристики:</h3>
+                    <ul>
+                        <li>✈️ Максимальная скорость: 287 км/ч</li>
+                        <li>⛽ Дальность полета: 610 км</li>
+                        <li>👥 Пассажировместимость: 7 человек (VIP конфигурация)</li>
+                        <li>🔧 Двигатель: Turbomeca Arriel 2D, 847 л.с.</li>
+                    </ul>
+                    <img src="https://images.unsplash.com/photo-1579165466991-4671351aec7a?w=800&h=400&fit=crop" class="modal-image" alt="Интерьер H130">
+                    <h3>✨ Особенности премиальной комплектации:</h3>
+                    <ul>
+                        <li>💺 Салон VIP класса с кожаными креслами премиум-класса</li>
+                        <li>🔇 Улучшенная шумоизоляция (на 40% тише стандартной)</li>
+                        <li>🌡️ Климат-контроль с индивидуальными настройками</li>
+                        <li>📺 Мультимедийная система с сенсорными экранами</li>
+                        <li>🛰️ Спутниковая связь Starlink</li>
+                    </ul>
+                `
+            },
+            { 
+                id: 2, 
+                title: "Новая программа лизинга от SkySwag", 
+                date: "28 мая 2026", 
+                category: "Лизинг", 
+                image: "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=800&h=500&fit=crop", 
+                excerpt: "Запущена специальная программа лизинга на вертолеты Robinson с пониженной ставкой. Первоначальный взнос всего от 10%.", 
+                views: 1567,
+                likes: 234,
+                shares: 89,
+                comments: 45,
+                fullContent: `
+                    <h2>💰 Специальная программа лизинга на вертолеты Robinson</h2>
+                    <img src="https://images.unsplash.com/photo-1520437358207-323b43b50729?w=1200&h=600&fit=crop" class="modal-image" alt="Robinson R66">
+                    <p>SkySwag совместно с ведущими банками запускает уникальную программу лизинга на вертолеты Robinson R66. Это предложение делает владение собственным вертолетом доступным для малого и среднего бизнеса.</p>
+                    <h3>📋 Условия программы:</h3>
+                    <ul>
+                        <li>💵 Первоначальный взнос: от 10%</li>
+                        <li>📉 Ставка: от 8% годовых</li>
+                        <li>📅 Срок: до 7 лет</li>
+                        <li>🔄 Досрочное погашение: без комиссии</li>
+                    </ul>
+                `
+            },
+            { 
+                id: 3, 
+                title: "Открытие сервисного центра в Москве", 
+                date: "10 апреля 2026", 
+                category: "Сервис", 
+                image: "https://images.unsplash.com/photo-1579165466991-4671351aec7a?w=800&h=500&fit=crop", 
+                excerpt: "Новый сертифицированный сервисный центр начал работу в Москве. Площадь 2000 кв.м, современное оборудование.", 
+                views: 3124,
+                likes: 456,
+                shares: 123,
+                comments: 67,
+                fullContent: `
+                    <h2>🔧 Новый сертифицированный сервисный центр SkySwag открылся в Москве</h2>
+                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=1200&h=600&fit=crop" class="modal-image" alt="Сервисный центр">
+                    <p>Новый сертифицированный сервисный центр SkySwag открылся в Москве на территории аэропорта "Внуково-3". Это крупнейший частный сервисный центр по обслуживанию вертолетов в Центральном регионе.</p>
+                    <h3>📊 Характеристики центра:</h3>
+                    <ul>
+                        <li>🏢 Площадь: 2000 квадратных метров</li>
+                        <li>🚁 Ангар: одновременное размещение до 8 вертолетов</li>
+                        <li>👨‍🔧 Инженерный состав: 15 сертифицированных специалистов</li>
+                    </ul>
+                `
+            },
+            { 
+                id: 4, 
+                title: "HeliRussia 2026: SkySwag представляет новинки", 
+                date: "5 марта 2026", 
+                category: "Мероприятия", 
+                image: "https://images.unsplash.com/photo-1577495508326-19a1b3cf65b7?w=800&h=500&fit=crop", 
+                excerpt: "Приглашаем посетить наш стенд на международной выставке HeliRussia 2026. Будут представлены новинки и спецпредложения.", 
+                views: 1890,
+                likes: 267,
+                shares: 78,
+                comments: 34,
+                fullContent: `
+                    <h2>🎪 SkySwag на HeliRussia 2026: новые горизонты</h2>
+                    <img src="https://images.unsplash.com/photo-1520437358207-323b43b50729?w=1200&h=600&fit=crop" class="modal-image" alt="HeliRussia">
+                    <p>С 3 по 5 марта 2026 года в Москве прошла 15-я международная выставка вертолетной индустрии HeliRussia 2026. Компания SkySwag представила новейшие разработки.</p>
+                    <h3>📊 Итоги участия:</h3>
+                    <ul>
+                        <li>👥 Посетителей стенда: более 1500 человек</li>
+                        <li>🤝 Проведено переговоров: 87</li>
+                        <li>✍️ Подписано соглашений: 12</li>
+                    </ul>
+                `
+            },
+            { 
+                id: 5, 
+                title: "Новый вертолет для санавиации", 
+                date: "12 февраля 2026", 
+                category: "Социальные проекты", 
+                image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&h=500&fit=crop", 
+                excerpt: "Передан специализированный вертолет Airbus H125 для нужд санитарной авиации. Машина оборудована медицинским модулем.", 
+                views: 2678,
+                likes: 567,
+                shares: 234,
+                comments: 89,
+                fullContent: `
+                    <h2>🏥 SkySwag передал вертолет для санитарной авиации</h2>
+                    <img src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1200&h=600&fit=crop" class="modal-image" alt="Санавиация">
+                    <p>12 февраля 2026 года состоялась торжественная передача специализированного вертолета Airbus H125 Национальной службе санитарной авиации. Это уже третья машина, поставленная SkySwag для нужд экстренной медицинской помощи.</p>
+                    <h3>🩺 Техническое оснащение:</h3>
+                    <ul>
+                        <li>🚑 Медицинский модуль: полный комплект реанимационного оборудования</li>
+                        <li>💨 Кислородная система: на 8 часов автономной работы</li>
+                        <li>⚡ Дефибриллятор: Corpuls 3</li>
+                    </ul>
+                `
+            },
+            { 
+                id: 6, 
+                title: "Расширение партнерской сети", 
+                date: "20 января 2026", 
+                category: "Партнерство", 
+                image: "https://images.unsplash.com/photo-1520437358207-323b43b50729?w=800&h=500&fit=crop", 
+                excerpt: "Заключены соглашения с новыми поставщиками из Европы и Азии. Ассортимент доступных моделей стал еще шире.", 
+                views: 1234,
+                likes: 345,
+                shares: 56,
+                comments: 28,
+                fullContent: `
+                    <h2>🤝 SkySwag расширяет международное сотрудничество</h2>
+                    <img src="https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=1200&h=600&fit=crop" class="modal-image" alt="Партнерство">
+                    <p>В январе 2026 года компания SkySwag подписала ряд стратегических соглашений с ведущими мировыми производителями авиационной техники.</p>
+                    <h3>🌍 Новые партнеры:</h3>
+                    <ul>
+                        <li>🇫🇷 Airbus Helicopters (Франция) - расширение дилерского соглашения</li>
+                        <li>🇮🇹 Leonardo S.p.A. (Италия) - начало сотрудничества</li>
+                        <li>🇬🇧 Rolls-Royce (Великобритания) - поставка двигателей</li>
+                    </ul>
+                `
+            }
+        ];
+
+        let currentCategory = 'all';
+        let currentPage = 1;
+        const itemsPerPage = 6;
+        let userLikes = JSON.parse(localStorage.getItem('newsLikes') || '{}');
+
+        const categories = ['all', ...new Set(newsData.map(n => n.category))];
+
+        function renderCategories() {
+            const container = document.getElementById('categories');
+            container.innerHTML = categories.map(cat => `
+                <button class="category-btn ${cat === currentCategory ? 'active' : ''}" data-category="${cat}">
+                    ${cat === 'all' ? '📰 Все новости' : cat}
+                </button>
+            `).join('');
+            
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentCategory = btn.dataset.category;
+                    currentPage = 1;
+                    renderCategories();
+                    renderNews();
+                    renderPagination();
+                });
+            });
+        }
+
+        function renderNews() {
+            let filtered = currentCategory === 'all' ? newsData : newsData.filter(n => n.category === currentCategory);
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedNews = filtered.slice(start, end);
+            
+            const grid = document.getElementById('newsGrid');
+            if (paginatedNews.length === 0) {
+                grid.innerHTML = '<div style="text-align: center; padding: 3rem; color: #888;">📭 Новостей не найдено</div>';
+                return;
+            }
+            
+            grid.innerHTML = paginatedNews.map(news => `
+                <div class="news-card" onclick="openNews(${news.id})">
+                    <div class="news-image" style="background-image: url('${news.image}')">
+                        <div class="news-category-badge">${news.category}</div>
+                        <div class="news-date-badge">📅 ${news.date}</div>
+                    </div>
+                    <div class="news-content">
+                        <h3 class="news-title">${news.title}</h3>
+                        <p class="news-excerpt">${news.excerpt.substring(0, 120)}...</p>
+                        <div class="news-stats">
+                            <div class="stat-item" onclick="event.stopPropagation(); incrementViews(${news.id})">
+                                <span class="stat-icon">👁️</span>
+                                <span class="stat-count">${(news.views + (userLikes[`views_${news.id}`] || 0)).toLocaleString()}</span>
+                            </div>
+                            <div class="stat-item" onclick="event.stopPropagation(); toggleLike(${news.id})">
+                                <span class="stat-icon">❤️</span>
+                                <span class="stat-count" id="likes-${news.id}">${(news.likes + (userLikes[`likes_${news.id}`] || 0)).toLocaleString()}</span>
+                            </div>
+                            <div class="stat-item" onclick="event.stopPropagation(); shareNews(${news.id}, '${news.title}')">
+                                <span class="stat-icon">🔄</span>
+                                <span class="stat-count">${(news.shares + (userLikes[`shares_${news.id}`] || 0)).toLocaleString()}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">💬</span>
+                                <span class="stat-count">${news.comments}</span>
+                            </div>
+                        </div>
+                        <div class="read-more">Читать далее →</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPagination() {
+            let filtered = currentCategory === 'all' ? newsData : newsData.filter(n => n.category === currentCategory);
+            const totalPages = Math.ceil(filtered.length / itemsPerPage);
+            const pagination = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            let html = '';
+            html += `<button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>←</button>`;
+            
+            for (let i = 1; i <= Math.min(totalPages, 5); i++) {
+                html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+            }
+            
+            if (totalPages > 5) {
+                html += `<span style="color: #888;">...</span>`;
+                html += `<button class="page-btn" onclick="changePage(${totalPages})">${totalPages}</button>`;
+            }
+            
+            html += `<button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>→</button>`;
+            pagination.innerHTML = html;
+        }
+
+        function changePage(page) {
+            let filtered = currentCategory === 'all' ? newsData : newsData.filter(n => n.category === currentCategory);
+            const totalPages = Math.ceil(filtered.length / itemsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderNews();
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function incrementViews(id) {
+            const key = `views_${id}`;
+            userLikes[key] = (userLikes[key] || 0) + 1;
+            localStorage.setItem('newsLikes', JSON.stringify(userLikes));
+            renderNews();
+        }
+
+        function toggleLike(id) {
+            const key = `likes_${id}`;
+            userLikes[key] = (userLikes[key] || 0) + 1;
+            localStorage.setItem('newsLikes', JSON.stringify(userLikes));
+            
+            const likesSpan = document.getElementById(`likes-${id}`);
+            if (likesSpan) {
+                const news = newsData.find(n => n.id === id);
+                const totalLikes = news.likes + (userLikes[key] || 0);
+                likesSpan.textContent = totalLikes.toLocaleString();
+                likesSpan.style.animation = 'pulse 0.3s ease';
+                setTimeout(() => {
+                    if (likesSpan) likesSpan.style.animation = '';
+                }, 300);
+            }
+        }
+
+        function shareNews(id, title) {
+            const key = `shares_${id}`;
+            userLikes[key] = (userLikes[key] || 0) + 1;
+            localStorage.setItem('newsLikes', JSON.stringify(userLikes));
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: 'Интересная новость от SkySwag',
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('📋 Ссылка скопирована в буфер обмена!');
+            }
+            renderNews();
+        }
+
+        function openNews(id) {
+            const news = newsData.find(n => n.id === id);
+            if (!news) return;
+            
+            const modal = document.getElementById('newsModal');
+            const modalContent = document.getElementById('modalContent');
+            const isLiked = userLikes[`likes_${id}`] || false;
+            
+            modalContent.innerHTML = `
+                <h1 class="modal-title">${news.title}</h1>
+                <div class="modal-meta">
+                    <div class="modal-meta-item">📅 ${news.date}</div>
+                    <div class="modal-meta-item">📁 ${news.category}</div>
+                    <div class="modal-meta-item">👁️ ${(news.views + (userLikes[`views_${id}`] || 0)).toLocaleString()} просмотров</div>
+                </div>
+                <div class="modal-content-text">${news.fullContent}</div>
+                <div class="modal-actions">
+                    <button class="modal-action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLikeInModal(${id})">
+                        ❤️ ${(news.likes + (userLikes[`likes_${id}`] || 0)).toLocaleString()}
+                    </button>
+                    <button class="modal-action-btn" onclick="shareNewsInModal(${id}, '${news.title}')">
+                        🔄 Поделиться
+                    </button>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function toggleLikeInModal(id) {
+            toggleLike(id);
+            openNews(id);
+        }
+
+        function shareNewsInModal(id, title) {
+            shareNews(id, title);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('newsModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const transition = document.getElementById('pageTransition');
+                if (transition) transition.classList.remove('active');
+            }, 1000);
+            renderCategories();
+            renderNews();
+            renderPagination();
+        });
+    </script>
+</body>
+</html>
