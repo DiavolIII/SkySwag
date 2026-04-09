@@ -121,7 +121,19 @@
 | tests/test_api.py | unittest |
 
 **Схема потока данных**
-
+```bash
+[Браузер] ──HTTP + JWT──▶ [app.py] ──┬──▶ [routes.py] ──▶ [models.py] ──▶ [SQLite]
+│
+├──▶ [auth.py]
+│
+├──▶ [admin_auth.py]
+│
+├──▶ [cache.py] ◀──┘
+│
+├──▶ [ai_assistant.py]
+│
+└──▶ [logging_config.py] ──▶ *.log
+```
 ### Взаимодействие компонентов
 
 | Этап | Описание |
