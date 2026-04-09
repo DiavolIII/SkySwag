@@ -1,6 +1,6 @@
 <div align="center">
   
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=40&duration=3000&pause=1000&color=D4AF37&center=true&vCenter=true&random=false&width=600&height=80&lines=SKYSWAG;ПРЕМИАЛЬНЫЕ+ВЕРТОЛЕТЫ;Я" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=40&duration=3000&pause=1000&color=D4AF37&center=true&vCenter=true&random=false&width=600&height=80&lines=SKYSWAG;ПРЕМИАЛЬНЫЕ+ВЕРТОЛЕТЫ;" alt="Typing SVG" />
   
   <p>
     <img src="https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white" />
