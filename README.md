@@ -200,8 +200,10 @@ http://localhost:5000
 ```bash
 cd backend
 python -m unittest tests/test_api.py -v
-```
+``` 
 
 ### Мастер-пароль для доступа к админ-панели
 
-# SkySwagAdmin2024!@#$ (для прода - унесу в кэш или облако)
+```bash 
+# SkySwagAdmin2024!@#$ (для прода - унесу в кэш или облако) 
+```
